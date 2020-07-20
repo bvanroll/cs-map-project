@@ -23,9 +23,7 @@ namespace opdracht2
 {
     public static class GeoJsonParser
     {
-        //public GeoJsonParser(string json)
-        //{
-        //}
+        
         public static double maximumXWaarde,
             maximumYWaarde,
             minimumXWaarde,
@@ -34,7 +32,7 @@ namespace opdracht2
             schaalYWaarde;
         public static double epsilon;
 
-        public static Tuple<List<System.Windows.Shapes.Polygon>, List<Ellipse>> TriangulateJsonData(string json,
+        public static List<System.Windows.Shapes.Polygon> TriangulateJsonData(string json,
             double x, double y)
         {
             epsilon = .003;
@@ -49,31 +47,15 @@ namespace opdracht2
             {
                 try
                 {
-                    List<List<Point>> PolygonsInPolygonsLijst = maakPolygonLijst(JsonConvert.DeserializeObject<MultiPolygon>(v["geometry"].ToString()));
-                    List<Point> EnkelePolygonLijst = maakPolygonLijn(PolygonsInPolygonsLijst, maximumXWaarde, maximumYWaarde,
-                        minimumXWaarde, minimumYWaarde);
+                    List<Point> EnkelePolygonLijst = maakPolygonLijn(maakPolygonLijst(JsonConvert.DeserializeObject<MultiPolygon>(v["geometry"].ToString())));
                     returnWaarde.AddRange(maakDriehoeken(EnkelePolygonLijst));
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("couldnt parse " + v["properties"]["name"]);
+                    Debug.WriteLine("couldn't parse " + v["properties"]["name"]);
                 }
-               
-                //JsonConvert.DeserializeObject<MultiPolygon>(JObject.Parse(v.ToString())["geometry"].ToString());
             }
-
-            return new Tuple<List<System.Windows.Shapes.Polygon>, List<Ellipse>>(NormalizePolygon(returnWaarde), new 
-            List<Ellipse>());
-            /*
-             * List<List<Point>> PolygonsInPolygonsLijst =
-                maakPolygonLijst(
-                    JsonConvert.DeserializeObject<MultiPolygon>(JObject.Parse(json)["features"][0]["geometry"]
-                        .ToString()));
-            List<Point> EnkelePolygonLijst = maakPolygonLijn(PolygonsInPolygonsLijst, maximumXWaarde, maximumYWaarde,
-                minimumXWaarde, minimumYWaarde);
-            return new Tuple<List<System.Windows.Shapes.Polygon>, List<Ellipse>>(maakDriehoeken(EnkelePolygonLijst),
-                maakPunten(EnkelePolygonLijst));
-            */
+            return NormalizePolygon(returnWaarde);
         }
 
         private static List<Ellipse> maakPunten(List<Point> enkelePolygonLijst)
@@ -118,11 +100,6 @@ namespace opdracht2
                            polygonLijst[punt3Index]));
                     break;
                 }
-                //double angle = getAngle(f2[i], f2[i + 1], f2[i + 2]);
-                //double hoek = berekenHoekVanPunten(polygonLijst[punt2Index].X, polygonLijst[punt2Index].Y,
-
-                // polygonLijst[punt1Index].X, polygonLijst[punt1Index].Y, polygonLijst[punt3Index].X,
-                //polygonLijst[punt3Index].Y);
                 double hoek = getAngle(polygonLijst[punt1Index], polygonLijst[punt2Index], polygonLijst[punt3Index]);
                 if (hoek < 180)
                 {
@@ -144,40 +121,10 @@ namespace opdracht2
         //https://stackoverflow.com/a/31334882
         private static double getAngle(Point p1, Point p2, Point p3)
         {
-            //double p12 = neemLengteTussen2Punten(p2, p1);
-            //double p13 = neemLengteTussen2Punten(p2, p3);
-            //double p23 = neemLengteTussen2Punten(p1, p3);
-            //double top = Math.Pow(p12, 2) + Math.Pow(p13, 2) + Math.Pow(p23, 2);
-            //double bottom = 2 * p12 * p13;
-
-            //return Math.Acos(top/bottom);
-            //double t = Math.Atan2(p3.Y - p1.Y, p3.X - p1.X);
-            //double v = Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
-
-            //return t - v;
             return Math.Atan2(p3.Y - p1.Y, p3.X - p1.X) - Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
         }
 
-        //https://stackoverflow.com/a/39673693
-        private static double berekenHoekVanPunten(double P1X, double P1Y, double P2X, double P2Y,
-            double P3X, double P3Y)
-        {
-            double numerator = P2Y * (P1X - P3X) + P1Y * (P3X - P2X) + P3Y * (P2X - P1X);
-            double denominator = (P2X - P1X) * (P1X - P3X) + (P2Y - P1Y) * (P1Y - P3Y);
-            double ratio = numerator / denominator;
-            double angleRad = Math.Atan(ratio);
-            double angleDeg = (angleRad * 180) / Math.PI;
-            if (angleDeg < 0)
-            {
-                angleDeg = 180 + angleDeg;
-            }
-            return angleDeg;
-        }
 
-        private static double neemLengteTussen2Punten(Point punt1, Point punt2)
-        {
-            return Math.Sqrt((Math.Pow((punt1.X - punt2.X), 2) + (Math.Pow(punt1.Y - punt2.Y, 2))));
-        }
 
         private static System.Windows.Shapes.Polygon createNewPolygon(Point punt1, Point punt2, Point punt3)
         {
@@ -204,12 +151,11 @@ namespace opdracht2
 
         private static List<List<Point>> maakPolygonLijst(MultiPolygon multiPolygon)
         {
-            List<List<Point>> polygonAlsVectorLijst = new List<List<Point>>();
-
-            foreach (GeoJSON.Net.Geometry.Polygon p in multiPolygon.Coordinates)
+            List<List<Point>> polygonAlsPuntenLijst = new List<List<Point>>();
+            foreach (GeoJSON.Net.Geometry.Polygon geojsonPolygon in multiPolygon.Coordinates)
             {
-                List<Point> polygonLijst = new List<Point>();
-                foreach (LineString lineString in p.Coordinates)
+                List<Point> puntenLijst = new List<Point>();
+                foreach (LineString lineString in geojsonPolygon.Coordinates)
                 {
                     foreach (Position positie in lineString.Coordinates)
                     {
@@ -233,25 +179,25 @@ namespace opdracht2
                             maximumYWaarde = positie.Latitude;
                         }
                         Point punt = new Point(positie.Longitude, positie.Latitude);
-                        if (!polygonLijst.Contains(punt)) polygonLijst.Add(new Point( positie.Longitude, positie.Latitude));
+                        if (!puntenLijst.Contains(punt)) puntenLijst.Add(new Point( positie.Longitude, positie.Latitude));
                     }
                 }
 
-                polygonLijst = DP(polygonLijst);
-                polygonAlsVectorLijst.Add(polygonLijst);
-                if (polygonAlsVectorLijst.Count > 1)
+                puntenLijst = douglasPeuker(puntenLijst);
+                polygonAlsPuntenLijst.Add(puntenLijst);
+                /* TODO waarom is dit hier???
+                if (polygonAlsPuntenLijst.Count > 1)
                 {
                     break;
-                }
+                }*/
             }
 
-            maximumXWaarde = maximumXWaarde - minimumXWaarde;
-            maximumYWaarde = maximumYWaarde - minimumYWaarde;
-            return polygonAlsVectorLijst;
+            maximumXWaarde -= minimumXWaarde;
+            maximumYWaarde -= minimumYWaarde;
+            return polygonAlsPuntenLijst;
         }
 
-        private static List<Point> maakPolygonLijn(List<List<Point>> multiPolygon, double Xmax, double Ymax,
-            double Xmin, double Ymin)
+        private static List<Point> maakPolygonLijn(List<List<Point>> multiPolygon)
         {
             //zoek dichtsbijzijnde punt wanneer toevoegen volgende vector en voeg pas vanaf dat punt toe.
             bool richting = true; //richting van inlezen polygon (met klok mee, tegen in klok)
@@ -343,7 +289,7 @@ namespace opdracht2
             return returnWaarde;
         }
         
-        private static List<Point> DP(List<Point> punten)
+        private static List<Point> douglasPeuker(List<Point> punten)
         {
             double dmax = -1;
             int index = 0;
@@ -368,8 +314,8 @@ namespace opdracht2
 
             if (dmax > epsilon)
             {
-                List<Point> recResults1 = DP(punten.GetRange(0, index));
-                List<Point> recResults2 = DP(punten.GetRange(index, end-1-index));
+                List<Point> recResults1 = douglasPeuker(punten.GetRange(0, index));
+                List<Point> recResults2 = douglasPeuker(punten.GetRange(index, end-1-index));
                 
 
                 returnWaarde.AddRange(recResults1);

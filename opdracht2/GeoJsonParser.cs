@@ -47,7 +47,7 @@ namespace opdracht2
             {
                 try
                 {
-                    List<Point> EnkelePolygonLijst = maakPolygonLijn(maakPolygonLijst(JsonConvert.DeserializeObject<MultiPolygon>(v["geometry"].ToString())));
+                    List<Point> EnkelePolygonLijst = MaakPolygonLijn(MaakPolygonLijst(JsonConvert.DeserializeObject<MultiPolygon>(v["geometry"].ToString())));
                     returnWaarde.AddRange(maakDriehoeken(EnkelePolygonLijst));
                 }
                 catch (Exception e)
@@ -96,14 +96,14 @@ namespace opdracht2
 
                 if (polygonLijst.Count == 3)
                 {
-                    returnWaarde.Add(createNewPolygon(polygonLijst[punt1Index], polygonLijst[punt2Index],
+                    returnWaarde.Add(CreateNewPolygon(polygonLijst[punt1Index], polygonLijst[punt2Index],
                            polygonLijst[punt3Index]));
                     break;
                 }
-                double hoek = getAngle(polygonLijst[punt1Index], polygonLijst[punt2Index], polygonLijst[punt3Index]);
+                double hoek = GetAngle(polygonLijst[punt1Index], polygonLijst[punt2Index], polygonLijst[punt3Index]);
                 if (hoek < 180)
                 {
-                    returnWaarde.Add(createNewPolygon(polygonLijst[punt1Index], polygonLijst[punt2Index],
+                    returnWaarde.Add(CreateNewPolygon(polygonLijst[punt1Index], polygonLijst[punt2Index],
                            polygonLijst[punt3Index]));
                     polygonLijst.RemoveAt(punt2Index);
 
@@ -119,14 +119,14 @@ namespace opdracht2
         }
 
         //https://stackoverflow.com/a/31334882
-        private static double getAngle(Point p1, Point p2, Point p3)
+        private static double GetAngle(Point p1, Point p2, Point p3)
         {
             return Math.Atan2(p3.Y - p1.Y, p3.X - p1.X) - Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
         }
 
 
 
-        private static System.Windows.Shapes.Polygon createNewPolygon(Point punt1, Point punt2, Point punt3)
+        private static System.Windows.Shapes.Polygon CreateNewPolygon(Point punt1, Point punt2, Point punt3)
         {
             System.Windows.Shapes.Polygon returnWaarde = new System.Windows.Shapes.Polygon();
             PointCollection puntCollectie = new PointCollection();
@@ -149,7 +149,7 @@ namespace opdracht2
             return returnWaarde;
         }
 
-        private static List<List<Point>> maakPolygonLijst(MultiPolygon multiPolygon)
+        private static List<List<Point>> MaakPolygonLijst(MultiPolygon multiPolygon)
         {
             List<List<Point>> polygonAlsPuntenLijst = new List<List<Point>>();
             foreach (GeoJSON.Net.Geometry.Polygon geojsonPolygon in multiPolygon.Coordinates)
@@ -197,7 +197,7 @@ namespace opdracht2
             return polygonAlsPuntenLijst;
         }
 
-        private static List<Point> maakPolygonLijn(List<List<Point>> multiPolygon)
+        private static List<Point> MaakPolygonLijn(List<List<Point>> multiPolygon)
         {
             //zoek dichtsbijzijnde punt wanneer toevoegen volgende vector en voeg pas vanaf dat punt toe.
             bool richting = true; //richting van inlezen polygon (met klok mee, tegen in klok)
@@ -214,6 +214,7 @@ namespace opdracht2
                 {
                     Point dichtsbijzijndePunt = returnWaarde[0];
                     Point dichtsbijzijndeNieuwePunt = normalizedPoly[0];
+                    
                     foreach (Point punt in returnWaarde)
                     {
                         //ik dacht dat dit beter ging zijn, maar blijkbaar geen echt effect, behalve shit vertragen.
@@ -227,14 +228,9 @@ namespace opdracht2
                                 dichtsbijzijndeNieuwePunt = punt2;
                             }
                         }
-
-                        /*if (Vector2.Distance(punt, normalizedPoly[0]) < Vector2.Distance(dichtsbijzijndePunt, normalizedPoly[0]))
-                        {
-                            dichtsbijzijndePunt = punt;
-                        }*/
                     }
 
-                    //normalizedPoly = orderList(normalizedPoly, dichtsbijzijndeNieuwePunt);
+                    normalizedPoly = orderList(normalizedPoly, dichtsbijzijndeNieuwePunt);
                     returnWaarde.InsertRange(returnWaarde.IndexOf(dichtsbijzijndePunt), normalizedPoly);
                 }
                 else
@@ -247,12 +243,12 @@ namespace opdracht2
 
             return returnWaarde;
         }
-
-        private static List<Vector2> orderList(List<Vector2> normalizedPoly, Vector2 dichtsbijzijndeNieuwePunt)
+        
+        private static List<Point> orderList(List<Point> normalizedPoly, Point dichtsbijzijndeNieuwePunt)
         {
             int i = normalizedPoly.IndexOf(dichtsbijzijndeNieuwePunt);
             int check = i;
-            List<Vector2> returnWaarde = new List<Vector2>();
+            List<Point> returnWaarde = new List<Point>();
             do
             {
                 if (i >= normalizedPoly.Count) i -= normalizedPoly.Count;
@@ -303,10 +299,6 @@ namespace opdracht2
                     index = i;
                     dmax = distance;
                 }
-                else
-                {
-                    Debug.WriteLine("distance between points = " + distance);
-                }
             }
 
 
@@ -336,52 +328,5 @@ namespace opdracht2
 
         }
 
-        public static Double PerpendicularDistance
-    (Vector2 Point1, Vector2 Point2, Vector2 Point)
-        {
-            //Area = |(1/2)(x1y2 + x2y3 + x3y1 - x2y1 - x3y2 - x1y3)|   *Area of triangle
-            //Base = v((x1-x2)²+(x1-x2)²)                               *Base of Triangle*
-            //Area = .5*Base*H                                          *Solve for height
-            //Height = Area/.5/Base
-
-            Double area = Math.Abs(.5 * (Point1.X * Point2.Y + Point2.X *
-            Point.Y + Point.X * Point1.Y - Point2.X * Point1.Y - Point.X *
-            Point2.Y - Point1.X * Point.Y));
-            Double bottom = Math.Sqrt(Math.Pow(Point1.X - Point2.X, 2) +
-            Math.Pow(Point1.Y - Point2.Y, 2));
-            Double height = area / bottom * 2;
-
-            return height;
-
-            //Another option
-            //Double A = Point.X - Point1.X;
-            //Double B = Point.Y - Point1.Y;
-            //Double C = Point2.X - Point1.X;
-            //Double D = Point2.Y - Point1.Y;
-
-            //Double dot = A * C + B * D;
-            //Double len_sq = C * C + D * D;
-            //Double param = dot / len_sq;
-
-            //Double xx, yy;
-
-            //if (param < 0)
-            //{
-            //    xx = Point1.X;
-            //    yy = Point1.Y;
-            //}
-            //else if (param > 1)
-            //{
-            //    xx = Point2.X;
-            //    yy = Point2.Y;
-            //}
-            //else
-            //{
-            //    xx = Point1.X + param * C;
-            //    yy = Point1.Y + param * D;
-            //}
-
-            //Double d = DistanceBetweenOn2DPlane(Point, new Point(xx, yy));
-        }
     }
 }

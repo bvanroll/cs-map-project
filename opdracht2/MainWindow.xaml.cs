@@ -93,30 +93,8 @@ namespace opdracht2
                 buffer.Add(f[0]);
                 f.RemoveAt(0);
             }
-            //List<Polygon> f = GeoJsonParser.TriangulateJsonData(File.ReadAllText(openFileDialog.FileName), c.Width, c.Height);
-
-            /*
-            foreach (Polygon p in f)
-            {
-                foreach(Point po in p.Points)
-                {
-                    //fuck c# https://stackoverflow.com/a/36482552
-                    Ellipse dot = new Ellipse();
-                    dot.Stroke = Brushes.Black;
-                    dot.StrokeThickness = 1;
-                    Canvas.SetZIndex(dot, 3);
-                    dot.Height = 5;
-                    dot.Width = 5;
-                    dot.Fill = new SolidColorBrush(Colors.Black);
-                    dot.Margin = new Thickness(po.X, po.Y, 0, 0);
-                    c.Children.Add(dot);
-                }
-                c.Children.Add(p);
-            }
-            */
-
-
-        }
+            
         }
     }
+}
 

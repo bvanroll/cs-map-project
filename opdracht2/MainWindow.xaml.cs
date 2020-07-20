@@ -43,7 +43,7 @@ namespace opdracht2
             {
                 //TODO remove
                 //Tuple<List<Polygon>, List<Ellipse>> t = GeoJsonParser.TriangulateJsonData(File.ReadAllText(openFileDialog.FileName), c.Width, c.Height);
-                f = GeoJsonParser.TriangulateJsonData(File.ReadAllText(openFileDialog.FileName), c.Width, c.Height);
+                f = GeoJsonParser.TriangulateJsonData(File.ReadAllText(openFileDialog.FileName), 800, 800);
                 el = new List<Ellipse>();
             }
             var st = new ScaleTransform();
@@ -54,11 +54,7 @@ namespace opdracht2
             }
             c.MouseWheel += (sender, e) =>
             {
-                if (f.Count > 0)
-                {
-                    buffer.Add(f[0]);
-                    f.RemoveAt(0);
-                }
+                
                 if (e.Delta > 0)
                 {
                     st.ScaleX *= 2;
@@ -78,9 +74,13 @@ namespace opdracht2
         {
             if (f.Count > 0)
             {
+                Debug.WriteLine("--- ADDING NEW POLYGON FROM LIST (COUNT: " + f.Count + ")");
+                Debug.WriteLine(f[0].ToString());
                 c.Children.Add(f[0]);
+                Debug.WriteLine(("ADDED POLYGON"));
                 f.RemoveAt(0);
-                Thread.Sleep(50);
+                Debug.WriteLine(("REMOVED POLYGON"));
+                Thread.Sleep(80);
             }
         }
 

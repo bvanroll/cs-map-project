@@ -100,6 +100,7 @@ namespace opdracht2
                            polygonLijst[punt3Index]));
                     break;
                 }
+                // TODO HIER MOET DE FOUT ZITTEN, KAN NIE ANDERS!!!!
                 double hoek = GetAngle(polygonLijst[punt1Index], polygonLijst[punt2Index], polygonLijst[punt3Index]);
                 if (hoek < 180)
                 {
@@ -192,8 +193,6 @@ namespace opdracht2
                 }*/
             }
 
-            maximumXWaarde -= minimumXWaarde;
-            maximumYWaarde -= minimumYWaarde;
             return polygonAlsPuntenLijst;
         }
 
@@ -253,8 +252,9 @@ namespace opdracht2
             {
                 if (i >= normalizedPoly.Count) i -= normalizedPoly.Count;
                 returnWaarde.Add(normalizedPoly[i]);
+                
                 i++;
-            } while (i != check);
+            } while (normalizedPoly.Count != returnWaarde.Count);
 
             return returnWaarde;
         }
@@ -262,6 +262,8 @@ namespace opdracht2
         //TODO refactor dit zodat het alle polygons normalized aan het einde van de formule.
         private static List<System.Windows.Shapes.Polygon> NormalizePolygon(List<System.Windows.Shapes.Polygon> polygons)
         {
+            maximumXWaarde -= minimumXWaarde;
+            maximumYWaarde -= minimumYWaarde;
             //mss deze fn hermaken zodat deze ook ramer douglas peucker
             List<System.Windows.Shapes.Polygon> returnWaarde = new List<System.Windows.Shapes.Polygon>();
             foreach (System.Windows.Shapes.Polygon p in polygons)
@@ -271,15 +273,13 @@ namespace opdracht2
                 {
                     double x = (punt.X - minimumXWaarde);
                     x = (x / maximumXWaarde);
-                    x = (x * 200);
+                    x = (x * schaalXWaarde);
                     double y = (punt.Y - minimumYWaarde);
                     y = (y / maximumYWaarde);
-                    y =  (y * 200);
+                    y =  (y * schaalYWaarde);
                     puntCollectie.Add(new Point(x, y));
                 }
-                Polygon pol = new Polygon();
-                pol.Points = puntCollectie;
-                returnWaarde.Add(pol);
+                returnWaarde.Add(CreateNewPolygon(puntCollectie[0], puntCollectie[1], puntCollectie[2]));
             }
             //List<Point> iets = DP(returnWaarde);
             return returnWaarde;

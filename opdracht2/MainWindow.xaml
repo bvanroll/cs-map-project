@@ -9,7 +9,7 @@
     <Grid>
         <Button HorizontalAlignment="Left" Margin="52,34,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.215,0.64" Click="Button_Click" Height="25" Width="55">
         </Button>
-        <Canvas x:Name="someCanvas" Margin="165,61,119,60"/>
+        <Canvas x:Name="someCanvas" Height="1080" Width="1920"/>
 
     </Grid>
 </Window>

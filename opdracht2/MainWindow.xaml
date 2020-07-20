@@ -1,0 +1,15 @@
+﻿<Window x:Class="opdracht2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:opdracht2"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button HorizontalAlignment="Left" Margin="52,34,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.215,0.64" Click="Button_Click" Height="25" Width="55">
+        </Button>
+        <Canvas x:Name="someCanvas" Margin="165,61,119,60"/>
+
+    </Grid>
+</Window>

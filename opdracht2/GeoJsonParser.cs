@@ -80,12 +80,20 @@ namespace opdracht2
         {
             List<System.Windows.Shapes.Polygon> returnWaarde = new List<System.Windows.Shapes.Polygon>();
             int i = 0;
+            int BACKUP = 0;
+            int BACKBACKUP = polygonLijst.Count;
             while (true)
             {
 
                 if (i >= polygonLijst.Count)
                 {
                     i = 0;
+                    if (polygonLijst.Count == BACKBACKUP)
+                    {
+                        BACKUP++;
+                    }
+
+                    BACKBACKUP = polygonLijst.Count;
                 }
 
                 int punt1Index = i;
@@ -107,13 +115,16 @@ namespace opdracht2
                     returnWaarde.Add(CreateNewPolygon(polygonLijst[punt1Index], polygonLijst[punt2Index],
                            polygonLijst[punt3Index]));
                     polygonLijst.RemoveAt(punt2Index);
+                    Debug.WriteLine("added a triangle, polygonLijst count " + polygonLijst.Count);
 
                 }
+                //Debug.WriteLine(hoek);
                 
                 
 
 
                 i++;
+                if (BACKUP == 5) break;
             }
 
             return returnWaarde;
@@ -122,7 +133,13 @@ namespace opdracht2
         //https://stackoverflow.com/a/31334882
         private static double GetAngle(Point p1, Point p2, Point p3)
         {
-            return Math.Atan2(p3.Y - p1.Y, p3.X - p1.X) - Math.Atan2(p2.Y - p1.Y, p2.X - p1.X);
+            double waarde = (Math.Atan2(p3.Y - p1.Y, p3.X - p1.X) - Math.Atan2(p2.Y - p1.Y, p2.X - p1.X)) * (180 / Math.PI);
+            if (waarde < -180)
+            {
+                waarde += 180;
+            }
+
+            return waarde;
         }
 
 

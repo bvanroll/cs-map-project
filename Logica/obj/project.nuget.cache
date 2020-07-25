@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "DkYRZH0wz5GvI2ijvz+sgOT16efYptv7grKHSqTr/pe3P5xaJovOtDwwUbm+RZKSgm6Hz7X/vIr5shpuBp7gjA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Beppe\\.nuget\\packages\\geojson.net\\1.2.19\\geojson.net.1.2.19.nupkg.sha512",
+    "C:\\Users\\Beppe\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

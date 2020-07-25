@@ -1,0 +1,5 @@
+C:\Users\Beppe\source\repos\opdracht2\Datalaag\bin\Debug\netcoreapp3.1\Datalaag.deps.json
+C:\Users\Beppe\source\repos\opdracht2\Datalaag\bin\Debug\netcoreapp3.1\Datalaag.dll
+C:\Users\Beppe\source\repos\opdracht2\Datalaag\obj\Debug\netcoreapp3.1\Datalaag.csprojAssemblyReference.cache
+C:\Users\Beppe\source\repos\opdracht2\Datalaag\obj\Debug\netcoreapp3.1\Datalaag.AssemblyInfoInputs.cache
+C:\Users\Beppe\source\repos\opdracht2\Datalaag\obj\Debug\netcoreapp3.1\Datalaag.AssemblyInfo.cs

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "vmw2sWM3we/HBXnNGRXWz0s694rjQwC3pE16toYVSE6mWRTpo3/Dmldhr2pN+hLG/clnqOj9soWfad987by8wg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Beppe\\.nuget\\packages\\geojson.net\\1.2.19\\geojson.net.1.2.19.nupkg.sha512",
+    "C:\\Users\\Beppe\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

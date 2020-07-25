@@ -35,7 +35,6 @@ namespace opdracht2
         public static List<System.Windows.Shapes.Polygon> TriangulateJsonData(string json,
             double x, double y)
         {
-            epsilon = .003;
             schaalXWaarde = x;
             schaalYWaarde = y;
             maximumXWaarde = double.MinValue;
@@ -47,15 +46,68 @@ namespace opdracht2
             {
                 try
                 {
-                    List<Point> EnkelePolygonLijst = MaakPolygonLijn(MaakPolygonLijst(JsonConvert.DeserializeObject<MultiPolygon>(v["geometry"].ToString())));
-                    returnWaarde.AddRange(maakDriehoeken(EnkelePolygonLijst));
+                    List<Point> EnkelePolygonLijst = new List<Point>();
+                    if (v["geometry"]["type"].ToString() == "MultiPolygon")
+                    {
+                        //TODO nieuwe manier vinden om multipolygons te parsen (dit zijn de geavanceerde polygons die momenteel voor problemen zorgen.
+                        MultiPolygon temp = JsonConvert.DeserializeObject<MultiPolygon>(v["geometry"].ToString());
+                        foreach (GeoJSON.Net.Geometry.Polygon geojsonPolygon in temp.Coordinates)
+                        {
+                            EnkelePolygonLijst = MaakPolygonLijn(MaakPolygonLijst(geojsonPolygon));
+                            returnWaarde.AddRange(maakDriehoeken(EnkelePolygonLijst));
+
+                        }
+
+                    }
+                    else
+                    {
+                        EnkelePolygonLijst = MaakPolygonLijn(MaakPolygonLijst(JsonConvert.DeserializeObject<GeoJSON
+                        .Net.Geometry.Polygon>(v["geometry"].ToString())));
+                        returnWaarde.AddRange(maakDriehoeken(EnkelePolygonLijst));
+
+                    }
+                    Debug.WriteLine("parsed " + v["properties"]["name"]);
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("couldn't parse " + v["properties"]["name"]);
+                    Debug.WriteLine("couldn't parse " + v["properties"]["name"] + "reason : " + e.Message);
                 }
             }
             return NormalizePolygon(returnWaarde);
+        }
+
+        private static List<List<Point>> MaakPolygonLijst(GeoJSON.Net.Geometry.Polygon deserializeObject)
+        {
+            double tMaxX = double.MinValue, tMaxY = double.MinValue, tMinX = double.MaxValue, tMinY = double.MaxValue;
+            List<List<Point>> polygonAlsPuntenLijst = new List<List<Point>>();
+            List<Point> puntenLijst = new List<Point>();
+            foreach (LineString lineString in deserializeObject.Coordinates)
+            {
+                foreach (Position positie in lineString.Coordinates)
+                {
+                    if (positie.Longitude < tMinX) tMinX = positie.Longitude;
+                    if (positie.Longitude > tMaxX) tMaxX = positie.Longitude;
+                    if (positie.Latitude < tMinY) tMinY = positie.Latitude;
+                    if (positie.Latitude > tMaxY) tMaxY = positie.Latitude;
+                    Point punt = new Point(positie.Longitude, positie.Latitude);
+                    if (!puntenLijst.Contains(punt)) puntenLijst.Add(new Point( positie.Longitude, positie.Latitude));
+                }
+            }
+            double nX = tMaxX - tMinX;
+            double nY = tMaxY - tMinY;
+            // versie 1, 1% max verschil lengte punten x OF y
+            double percent = .01;
+            //epsilon = ((nX * percent) < (nY * percent)) ? nX * percent : nY * percent;
+                
+            // versie 2, 1% max verschil gemiddelde lengte x y
+            epsilon = ((nX + nY) / 2) * percent;
+            maximumXWaarde = (maximumXWaarde > tMaxX) ? maximumXWaarde : tMaxX;
+            maximumYWaarde = (maximumYWaarde > tMaxY) ? maximumYWaarde : tMaxY;
+            minimumXWaarde = (minimumXWaarde < tMinX) ? minimumXWaarde : tMinX;
+            minimumYWaarde = (minimumYWaarde < tMinY) ? minimumYWaarde : tMinY;
+            puntenLijst = douglasPeuker(puntenLijst);
+            polygonAlsPuntenLijst.Add(puntenLijst);
+            return polygonAlsPuntenLijst;
         }
 
         private static List<Ellipse> maakPunten(List<Point> enkelePolygonLijst)
@@ -92,7 +144,7 @@ namespace opdracht2
                     {
                         BACKUP++;
                     }
-
+                    
                     BACKBACKUP = polygonLijst.Count;
                 }
 
@@ -102,20 +154,21 @@ namespace opdracht2
                 int punt3Index = i + 2;
                 if (punt3Index >= polygonLijst.Count) punt3Index -= polygonLijst.Count;
 
-                if (polygonLijst.Count == 3)
+                if (polygonLijst.Count < 3)
                 {
-                    returnWaarde.Add(CreateNewPolygon(polygonLijst[punt1Index], polygonLijst[punt2Index],
-                           polygonLijst[punt3Index]));
                     break;
                 }
-                // TODO HIER MOET DE FOUT ZITTEN, KAN NIE ANDERS!!!!
-                double hoek = GetAngle(polygonLijst[punt1Index], polygonLijst[punt2Index], polygonLijst[punt3Index]);
+                double hoek = GetAngle(polygonLijst[punt2Index], polygonLijst[punt1Index], polygonLijst[punt3Index]);
                 if (hoek < 180)
                 {
-                    returnWaarde.Add(CreateNewPolygon(polygonLijst[punt1Index], polygonLijst[punt2Index],
-                           polygonLijst[punt3Index]));
+                    returnWaarde.Add(CreateNewPolygon(polygonLijst[punt2Index], polygonLijst[punt3Index],
+                           polygonLijst[punt1Index]));
                     polygonLijst.RemoveAt(punt2Index);
                     Debug.WriteLine("added a triangle, polygonLijst count " + polygonLijst.Count);
+                    i = punt1Index;
+                    BACKUP = 0;
+                    continue;
+                    
 
                 }
                 //Debug.WriteLine(hoek);
@@ -124,7 +177,11 @@ namespace opdracht2
 
 
                 i++;
-                if (BACKUP == 5) break;
+                if (BACKUP >= polygonLijst.Count)
+                {
+                    Debug.WriteLine("FUCK, couldnt parse " + polygonLijst.Count + " points");
+                    break;
+                }
             }
 
             return returnWaarde;
@@ -134,9 +191,9 @@ namespace opdracht2
         private static double GetAngle(Point p1, Point p2, Point p3)
         {
             double waarde = (Math.Atan2(p3.Y - p1.Y, p3.X - p1.X) - Math.Atan2(p2.Y - p1.Y, p2.X - p1.X)) * (180 / Math.PI);
-            if (waarde < -180)
+            if (waarde < 0)
             {
-                waarde += 180;
+                waarde += 360;
             }
 
             return waarde;
@@ -163,12 +220,14 @@ namespace opdracht2
             Brush willekeurigeBrush = (Brush) properties[randomIndex].GetValue(null, null);
             returnWaarde.Fill = willekeurigeBrush;
             returnWaarde.Stroke = willekeurigeBrush;
+            
 
             return returnWaarde;
         }
 
         private static List<List<Point>> MaakPolygonLijst(MultiPolygon multiPolygon)
         {
+            double tMaxX = double.MinValue, tMaxY = double.MinValue, tMinX = double.MaxValue, tMinY = double.MaxValue;
             List<List<Point>> polygonAlsPuntenLijst = new List<List<Point>>();
             foreach (GeoJSON.Net.Geometry.Polygon geojsonPolygon in multiPolygon.Coordinates)
             {
@@ -177,39 +236,52 @@ namespace opdracht2
                 {
                     foreach (Position positie in lineString.Coordinates)
                     {
-                        if (positie.Longitude < minimumXWaarde)
+                        if (positie.Longitude < tMinX)
                         {
-                            minimumXWaarde = positie.Longitude;
+                            tMinX = positie.Longitude;
                         }
 
-                        if (positie.Longitude > maximumXWaarde)
+                        if (positie.Longitude > tMaxX)
                         {
-                            maximumXWaarde = positie.Longitude;
+                            tMaxX = positie.Longitude;
                         }
 
-                        if (positie.Latitude < minimumYWaarde)
+                        if (positie.Latitude < tMinY)
                         {
-                            minimumYWaarde = positie.Latitude;
+                            tMinY = positie.Latitude;
                         }
 
-                        if (positie.Latitude > maximumYWaarde)
+                        if (positie.Latitude > tMaxY)
                         {
-                            maximumYWaarde = positie.Latitude;
+                            tMaxY = positie.Latitude;
                         }
                         Point punt = new Point(positie.Longitude, positie.Latitude);
-                        if (!puntenLijst.Contains(punt)) puntenLijst.Add(new Point( positie.Longitude, positie.Latitude));
+                        if (!puntenLijst.Contains(punt)) puntenLijst.Add(punt);
                     }
                 }
-
+                // TODO gebruik tmax waardes om epsilong te berekenen voor douglasPeuker
+                // door per polygon te berekenen werkt dit ook voor kleinere landen (baseren op grootste afstanden geeft
+                // grote landen meer polygons en kleine minder, nu is de vermindering bij elk gelijk)
+                
+                double nX = tMaxX - tMinX;
+                double nY = tMaxY - tMinY;
+                // versie 1, 1% max verschil lengte punten x OF y
+                double percent = .01;
+                //epsilon = ((nX * percent) < (nY * percent)) ? nX * percent : nY * percent;
+                
+                // versie 2, 1% max verschil gemiddelde lengte x y
+                epsilon = ((nX + nY) / 2) * percent;
+                maximumXWaarde = (maximumXWaarde > tMaxX) ? maximumXWaarde : tMaxX;
+                maximumYWaarde = (maximumYWaarde > tMaxY) ? maximumYWaarde : tMaxY;
+                minimumXWaarde = (minimumXWaarde < tMinX) ? minimumXWaarde : tMinX;
+                minimumYWaarde = (minimumYWaarde < tMinY) ? minimumYWaarde : tMinY;
                 puntenLijst = douglasPeuker(puntenLijst);
+                
                 polygonAlsPuntenLijst.Add(puntenLijst);
-                /* TODO waarom is dit hier???
-                if (polygonAlsPuntenLijst.Count > 1)
-                {
-                    break;
-                }*/
             }
 
+            polygonAlsPuntenLijst.OrderBy(o => o.Count).Reverse();
+            
             return polygonAlsPuntenLijst;
         }
 
@@ -276,32 +348,30 @@ namespace opdracht2
             return returnWaarde;
         }
 
-        //TODO refactor dit zodat het alle polygons normalized aan het einde van de formule.
         private static List<System.Windows.Shapes.Polygon> NormalizePolygon(List<System.Windows.Shapes.Polygon> polygons)
         {
             maximumXWaarde -= minimumXWaarde;
             maximumYWaarde -= minimumYWaarde;
-            //mss deze fn hermaken zodat deze ook ramer douglas peucker
             List<System.Windows.Shapes.Polygon> returnWaarde = new List<System.Windows.Shapes.Polygon>();
             foreach (System.Windows.Shapes.Polygon p in polygons)
             {
                 PointCollection puntCollectie = new PointCollection();
+                double schaalWaarde = (schaalXWaarde < schaalYWaarde) ? schaalXWaarde : schaalYWaarde;
                 foreach (Point punt in p.Points)
                 {
                     double x = (punt.X - minimumXWaarde);
-                    x = (x / maximumXWaarde);
-                    x = (x * schaalXWaarde);
+                    x /= maximumXWaarde;
+                    x *= schaalWaarde;
                     double y = (punt.Y - minimumYWaarde);
-                    y = (y / maximumYWaarde);
-                    y =  (y * schaalYWaarde);
+                    y /= maximumYWaarde;
+                    y *= schaalWaarde;
                     puntCollectie.Add(new Point(x, y));
                 }
                 returnWaarde.Add(CreateNewPolygon(puntCollectie[0], puntCollectie[1], puntCollectie[2]));
             }
-            //List<Point> iets = DP(returnWaarde);
             return returnWaarde;
         }
-        
+        // straight van dp wiki
         private static List<Point> douglasPeuker(List<Point> punten)
         {
             double dmax = -1;

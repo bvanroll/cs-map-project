@@ -7,9 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button HorizontalAlignment="Left" Margin="52,34,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.215,0.64" Click="Button_Click" Height="25" Width="55">
-        </Button>
-        <Canvas x:Name="someCanvas" Height="1080" Width="1920"/>
+        <Canvas x:Name="someCanvas" RenderTransformOrigin="0.5,0.5" Margin="315,128,249,128">
+            <Canvas.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2" ScaleX="2"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Canvas.RenderTransform>
+        </Canvas>
 
     </Grid>
 </Window>

@@ -80,7 +80,7 @@ namespace opdracht2
                 Debug.WriteLine(("ADDED POLYGON"));
                 f.RemoveAt(0);
                 Debug.WriteLine(("REMOVED POLYGON"));
-                Thread.Sleep(80);
+                //Thread.Sleep(80);
             }
         }
 

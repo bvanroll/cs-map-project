@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using Globals;
 
 
 namespace Datalaag
@@ -24,17 +23,14 @@ namespace Datalaag
                 {
                     case "MultiPolygon":
                         _polygons.Add(new PolygonPunten(JsonConvert.DeserializeObject<Polygon>(feature["geometry"]
-                        .ToString()), feature["properties"]["name"].ToString()));
+                            .ToString()), feature["properties"]["name"].ToString()));
                         break;
                     case "Polygon":
                         _multiPolygons.Add(new MultiPolygonPunten(JsonConvert.DeserializeObject<MultiPolygon>
-                        (feature["geometry"].ToString()), feature["properties"]["name"].ToString()));
+                            (feature["geometry"].ToString()), feature["properties"]["name"].ToString()));
                         break;
                 }
             }
         }
-        
-        
-        
     }
 }

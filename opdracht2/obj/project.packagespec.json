@@ -15,7 +15,17 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "projectReferences": {}
+        "projectReferences": {
+          "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj": {
+            "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj"
+          },
+          "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
+            "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj"
+          },
+          "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj": {
+            "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj"
+          }
+        }
       }
     },
     "warningProperties": {

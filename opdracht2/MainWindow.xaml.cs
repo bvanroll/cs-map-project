@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Globals;
+using Brush = System.Windows.Media.Brush;
+using Brushes = System.Windows.Media.Brushes;
+using Point = System.Windows.Point;
 
 namespace opdracht2
 {
@@ -32,6 +37,9 @@ namespace opdracht2
         List<Polygon> buffer;
         public MainWindow()
         {
+            //todo logica toevoegen als object
+            //todo datalaag toevoegen als object en passen naar logica
+
             f = new List<Polygon>();
             el = new List<Ellipse>();
             buffer = new List<Polygon>();
@@ -84,6 +92,28 @@ namespace opdracht2
             }
         }
 
+        private Polygon makePolygon(PolygonPunten polygonPunten)
+        {
+            PointCollection punten = new PointCollection();
+            foreach (Punt p in polygonPunten.Punten)
+            {
+                punten.Add(p.ToPoint());
+            }
+            Polygon polygon = new Polygon();
+            polygon.Points = punten;
+            polygon.StrokeThickness = 1;
+
+
+            // deze code zorgt ervoor dat de driehoeken duidelijker zijn op de afbeelding door de kleur willekeurig te selecteren
+            Random random = new Random();
+            Type brushType = typeof(Brushes);
+            PropertyInfo[] properties = brushType.GetProperties();
+            int randomIndex = random.Next(properties.Length);
+            Brush willekeurigeBrush = (Brush) properties[randomIndex].GetValue(null, null);
+            polygon.Fill = willekeurigeBrush;
+            polygon.Stroke = willekeurigeBrush;
+            return polygon;
+        }
 
         //zoom https://stackoverflow.com/a/44593026
         private void Button_Click(object sender, RoutedEventArgs e)

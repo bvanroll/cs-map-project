@@ -1448,6 +1448,40 @@
         "runtime": {
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
+      },
+      "Datalaag/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Globals": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Datalaag.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Datalaag.dll": {}
+        }
+      },
+      "Globals/1.0.0": {
+        "type": "project",
+        "compile": {
+          "bin/placeholder/Globals.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Globals.dll": {}
+        }
+      },
+      "Logica/1.0.0": {
+        "type": "project",
+        "dependencies": {
+          "Datalaag": "1.0.0",
+          "Globals": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Logica.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Logica.dll": {}
+        }
       }
     }
   },
@@ -5338,11 +5372,29 @@
         "system.xml.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xmldocument.nuspec"
       ]
+    },
+    "Datalaag/1.0.0": {
+      "type": "project",
+      "path": "../Datalaag/Datalaag.csproj",
+      "msbuildProject": "../Datalaag/Datalaag.csproj"
+    },
+    "Globals/1.0.0": {
+      "type": "project",
+      "path": "../Globals/Globals.csproj",
+      "msbuildProject": "../Globals/Globals.csproj"
+    },
+    "Logica/1.0.0": {
+      "type": "project",
+      "path": "../Logica/Logica.csproj",
+      "msbuildProject": "../Logica/Logica.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "Datalaag >= 1.0.0",
       "GeoJSON.Net >= 1.2.19",
+      "Globals >= 1.0.0",
+      "Logica >= 1.0.0",
       "System.Drawing.Common >= 4.7.0"
     ]
   },
@@ -5371,7 +5423,17 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj": {
+              "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj"
+            },
+            "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
+              "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj"
+            },
+            "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj": {
+              "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

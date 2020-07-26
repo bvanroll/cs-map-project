@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Canvas x:Name="someCanvas" RenderTransformOrigin="0.5,0.5" Margin="315,128,249,128">
+        <Canvas x:Name="someCanvas" RenderTransformOrigin="0.5,0.5" Margin="436,114,128,113">
             <Canvas.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleY="2" ScaleX="2"/>
@@ -17,6 +17,10 @@
                 </TransformGroup>
             </Canvas.RenderTransform>
         </Canvas>
+        <ListBox Margin="10,94,568,93"/>
+        <Button x:Name="LoadFile" Content="LoadFile" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="27" Width="65"/>
+        <Slider HorizontalAlignment="Left" Margin="10,406,0,0" VerticalAlignment="Top" Width="120" Maximum="100" SmallChange="1"/>
+        <Label Content="Epsilon (0.001 - 0.1%)" HorizontalAlignment="Left" Margin="8,375,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

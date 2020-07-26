@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 using GeoJSON.Net.Geometry;
-using Polygon = GeoJSON.Net.Geometry.Polygon;
-
 namespace Globals
 {
     public class PolygonPunten
@@ -25,7 +23,7 @@ namespace Globals
             MinimumY = punten.Min(punt => punt.Y);
         }
 
-        public PolygonPunten(Polygon p, string naam = "")
+        public PolygonPunten(GeoJSON.Net.Geometry.Polygon p, string naam = "")
         {
             Naam = naam;
             Punten = new List<Punt>();
@@ -45,6 +43,7 @@ namespace Globals
                 }
             }
         }
+
     }
 }
 

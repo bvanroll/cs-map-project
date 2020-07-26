@@ -24,7 +24,7 @@ namespace Globals
             else return Naam;
         }
 
-        public Point GetPoint()
+        public Point ToPoint()
         {
             return new Point(X, Y);
         }

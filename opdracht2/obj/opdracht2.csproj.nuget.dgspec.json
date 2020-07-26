@@ -4,6 +4,60 @@
     "C:\\Users\\Beppe\\source\\repos\\opdracht2\\opdracht2\\opdracht2.csproj": {}
   },
   "projects": {
+    "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj",
+        "projectName": "Datalaag",
+        "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
+                "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj",
+        "projectName": "Globals",
+        "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj"
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
+    "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj",
+        "projectName": "Logica",
+        "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj",
+        "frameworks": {
+          "net472": {
+            "projectReferences": {
+              "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj": {
+                "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj"
+              },
+              "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
+                "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj"
+              }
+            }
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {}
+      }
+    },
     "C:\\Users\\Beppe\\source\\repos\\opdracht2\\opdracht2\\opdracht2.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -26,7 +80,17 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj": {
+                "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj"
+              },
+              "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
+                "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj"
+              },
+              "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj": {
+                "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

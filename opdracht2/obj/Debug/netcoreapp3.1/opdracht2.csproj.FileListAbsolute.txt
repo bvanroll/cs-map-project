@@ -20,3 +20,9 @@ C:\Users\Beppe\source\repos\opdracht2\opdracht2\obj\Debug\netcoreapp3.1\opdracht
 C:\Users\Beppe\source\repos\opdracht2\opdracht2\obj\Debug\netcoreapp3.1\opdracht2.pdb
 C:\Users\Beppe\source\repos\opdracht2\opdracht2\obj\Debug\netcoreapp3.1\opdracht2.genruntimeconfig.cache
 C:\Users\Beppe\source\repos\opdracht2\opdracht2\obj\Debug\netcoreapp3.1\opdracht2.csproj.CoreCompileInputs.cache
+C:\Users\Beppe\source\repos\opdracht2\opdracht2\bin\Debug\netcoreapp3.1\Datalaag.dll
+C:\Users\Beppe\source\repos\opdracht2\opdracht2\bin\Debug\netcoreapp3.1\Globals.dll
+C:\Users\Beppe\source\repos\opdracht2\opdracht2\bin\Debug\netcoreapp3.1\Logica.dll
+C:\Users\Beppe\source\repos\opdracht2\opdracht2\bin\Debug\netcoreapp3.1\Datalaag.pdb
+C:\Users\Beppe\source\repos\opdracht2\opdracht2\bin\Debug\netcoreapp3.1\Globals.pdb
+C:\Users\Beppe\source\repos\opdracht2\opdracht2\bin\Debug\netcoreapp3.1\Logica.pdb

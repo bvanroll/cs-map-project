@@ -42,7 +42,7 @@ namespace Logica
             return TriangulatePolygon(polygon);
         }
 
-        private PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY)
+        public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY)
         {
             double maxX = polygon.MaximumX;
             double maxY = polygon.MaximumY;
@@ -63,6 +63,35 @@ namespace Logica
                 
             }
             return new PolygonPunten(returnWaarde, polygon.Naam);
+        }
+
+        public MultiPolygonPunten ScaleMultiPolygon(MultiPolygonPunten multiPolygon, double scaleX, double scaleY)
+        {
+            double maxX = multiPolygon.MaximumX;
+            double maxY = multiPolygon.MaximumY;
+            double minX = multiPolygon.MinimumX;
+            double minY = multiPolygon.MinimumY;
+            maxX -= minX;
+            maxY -= minY;
+            List<PolygonPunten> pp = new List<PolygonPunten>();
+            foreach (PolygonPunten polygon in multiPolygon.PolygonPunten)
+            {
+                List<Punt> returnWaarde = new List<Punt>();
+                foreach (Punt punt in polygon.Punten)
+                {
+                    double x = punt.X - minX;
+                    x /= maxX;
+                    x *= scaleX;
+                    double y = punt.Y - minY;
+                    y /= maxY;
+                    y *= scaleY;
+                    returnWaarde.Add(new Punt(x, y, punt.Naam));
+
+                }
+                pp.Add(new PolygonPunten(returnWaarde, polygon.Naam));
+            }
+
+            return new MultiPolygonPunten(pp, multiPolygon.Naam); 
         }
 
         public List<PolygonPunten> GetAllPolygons()

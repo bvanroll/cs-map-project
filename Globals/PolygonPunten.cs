@@ -44,6 +44,11 @@ namespace Globals
             }
         }
 
+        public override string ToString()
+        {
+            if (string.Equals(Naam, "", StringComparison.Ordinal)) return "UNKNOWN";
+            else return Naam;
+        }
     }
 }
 

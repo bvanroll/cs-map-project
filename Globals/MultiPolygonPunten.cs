@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Geometry;
 
@@ -34,6 +35,13 @@ namespace Globals
             MaximumY = polygonPunten.Max(p => p.MaximumY);
             MinimumX = polygonPunten.Max(p => p.MinimumX);
             MinimumY = polygonPunten.Max(p => p.MinimumY);
+        }
+
+
+        public override string ToString()
+        {
+            if (string.Equals(Naam, "", StringComparison.Ordinal)) return "UNKNOWN";
+            else return Naam;
         }
     }
 }

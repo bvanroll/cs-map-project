@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeoJSON.Net, Version=1.2.16.0, Culture=neutral, PublicKeyToken=42c00ea87f5f14d4">
+      <HintPath>..\packages\GeoJSON.Net.1.2.20-rc\lib\net45\GeoJSON.Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

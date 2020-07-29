@@ -21,11 +21,11 @@ namespace Datalaag
             {
                 switch (feature["geometry"]["type"].ToString())
                 {
-                    case "MultiPolygon":
+                    case "Polygon":
                         _polygons.Add(new PolygonPunten(JsonConvert.DeserializeObject<Polygon>(feature["geometry"]
                             .ToString()), feature["properties"]["name"].ToString()));
                         break;
-                    case "Polygon":
+                    case "MultiPolygon":
                         _multiPolygons.Add(new MultiPolygonPunten(JsonConvert.DeserializeObject<MultiPolygon>
                             (feature["geometry"].ToString()), feature["properties"]["name"].ToString()));
                         break;

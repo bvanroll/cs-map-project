@@ -1,0 +1,2 @@
+C:\Users\Beppe\source\repos\opdracht2\Logica\obj\Debug\Logica.csprojAssemblyReference.cache
+C:\Users\Beppe\source\repos\opdracht2\Logica\obj\Debug\Logica.csproj.CoreCompileInputs.cache

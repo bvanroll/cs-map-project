@@ -5,6 +5,7 @@
   },
   "projects": {
     "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj": {
+      "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj",
         "projectName": "Datalaag",
@@ -24,6 +25,7 @@
       }
     },
     "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
+      "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj",
         "projectName": "Globals",
@@ -34,6 +36,7 @@
       }
     },
     "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj": {
+      "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj",
         "projectName": "Logica",

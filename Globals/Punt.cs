@@ -14,8 +14,8 @@ namespace Globals
         public Punt(double x, double y, string naam = "")
         {
             Naam = naam;
-            X = x;
-            Y = y;
+            X = ConvertToRadians(x);
+            Y = ConvertToRadians(y);
         }
 
         public override string ToString()
@@ -23,7 +23,12 @@ namespace Globals
             if (string.Equals(Naam, "", StringComparison.Ordinal)) return "UNKNOWN";
             else return Naam;
         }
-
+        
+        public double ConvertToRadians(double angle)
+        {
+            return (Math.PI / 180) * angle;
+        }
+        
         public Point ToPoint()
         {
             return new Point(X, Y);

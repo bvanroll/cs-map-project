@@ -27,22 +27,18 @@ namespace Globals
         {
             Naam = naam;
             Punten = new List<Punt>();
-            MaximumX = double.MinValue;
-            MaximumY = double.MinValue;
-            MinimumX = double.MaxValue;
-            MinimumY = double.MaxValue;
             foreach (LineString l in p.Coordinates)
             {
                 foreach (Position pos in l.Coordinates)
                 {
-                    if (pos.Longitude > MaximumX) MaximumX = pos.Longitude;
-                    if (pos.Longitude < MinimumX) MinimumX = pos.Longitude;
-                    if (pos.Latitude > MaximumY) MaximumY = pos.Latitude;
-                    if (pos.Latitude < MinimumY) MinimumY = pos.Latitude;
                     Punten.Add(new Punt(pos.Longitude, pos.Latitude, naam));
                 }
             }
             Punten.Reverse();
+            MaximumX = Punten.Max(punt => punt.X);
+            MaximumY = Punten.Max(punt => punt.Y);
+            MinimumX = Punten.Min(punt => punt.X);
+            MinimumY = Punten.Min(punt => punt.Y);
         }
 
         public override string ToString()

@@ -43,29 +43,35 @@ namespace Logica
             return TriangulatePolygon(polygon);
         }
 
-        public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
+        public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 180, double offsetY = 180)
         {
             double maxX = polygon.MaximumX;
             double maxY = polygon.MaximumY;
             double minX = polygon.MinimumX;
             double minY = polygon.MinimumY;
-            maxX -= minX;
-            maxY -= minY;
             List<Punt> returnWaarde = new List<Punt>();
             foreach (Punt punt in polygon.Punten)
             {
-                double x = punt.X - minX;
-                x /= maxX;
-                x *= scaleX;
-                x += offsetX;
-                double y = punt.Y - minY;
-                y /= maxY;
-                y *= scaleY;
-                y += offsetY;
-                returnWaarde.Add(new Punt(x, y, punt.Naam));
-                
+                Punt x = ScalePoint(scaleX, scaleY,punt, maxX, maxY, offsetX, offsetY);
+                x.Naam = punt.Naam;
+                returnWaarde.Add(x);
             }
             return new PolygonPunten(returnWaarde, polygon.Naam);
+        }
+
+        //lat en long = graden, graden => coords (/360 * scale?
+        private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 360, double maxY = 360, double offsetX = 180, double 
+        offsetY = 180)
+        {
+            double x = punt.X;
+            x /= maxX;
+            x *= scaleX;
+            x += offsetX;
+            double y = punt.Y;
+            y /= maxY;
+            y *= scaleY;
+            y += offsetY;
+            return new Punt(x, y);
         }
 
         public MultiPolygonPunten ScaleMultiPolygon(MultiPolygonPunten multiPolygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
@@ -82,6 +88,7 @@ namespace Logica
                 List<Punt> returnWaarde = new List<Punt>();
                 foreach (Punt punt in polygon.Punten)
                 {
+                    /*
                     double x = punt.X - minX;
                     x /= maxX;
                     x *= scaleX;
@@ -90,7 +97,11 @@ namespace Logica
                     y /= maxY;
                     y *= scaleY;
                     y += offsetY;
-                    returnWaarde.Add(new Punt(x, y, punt.Naam));
+                    returnWaarde.Add(new Punt(x, y, punt.Naam));*/
+                    
+                    Punt x = ScalePoint(scaleX, scaleY,punt, maxX, maxY, offsetX, offsetY);
+                    x.Naam = punt.Naam;
+                    returnWaarde.Add(x);
 
                 }
                 pp.Add(new PolygonPunten(returnWaarde, polygon.Naam));
@@ -115,8 +126,11 @@ namespace Logica
                     List<Punt> punten = new List<Punt>();
                     foreach (Punt punt in poly.Punten)
                     {
-
-                        double x = punt.X - minX;
+                        
+                        Punt x = ScalePoint(scaleX, scaleY,punt, maxX, maxY, offsetX, offsetY);
+                        x.Naam = punt.Naam;
+                        punten.Add(x);
+                        /*double x = punt.X - minX;
                         x /= maxX;
                         x *= scaleX;
                         x += offsetX;
@@ -124,7 +138,7 @@ namespace Logica
                         y /= maxY;
                         y *= scaleY;
                         y += offsetY;
-                        punten.Add(new Punt(x, y, punt.Naam));
+                        punten.Add(new Punt(x, y, punt.Naam));*/
                     }
                     pp.Add(new PolygonPunten(punten, poly.Naam));
                 }

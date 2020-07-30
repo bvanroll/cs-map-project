@@ -43,7 +43,7 @@ namespace Logica
             return TriangulatePolygon(polygon);
         }
 
-        public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY)
+        public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
             double maxX = polygon.MaximumX;
             double maxY = polygon.MaximumY;
@@ -57,16 +57,18 @@ namespace Logica
                 double x = punt.X - minX;
                 x /= maxX;
                 x *= scaleX;
+                x += offsetX;
                 double y = punt.Y - minY;
                 y /= maxY;
                 y *= scaleY;
+                y += offsetY;
                 returnWaarde.Add(new Punt(x, y, punt.Naam));
                 
             }
             return new PolygonPunten(returnWaarde, polygon.Naam);
         }
 
-        public MultiPolygonPunten ScaleMultiPolygon(MultiPolygonPunten multiPolygon, double scaleX, double scaleY)
+        public MultiPolygonPunten ScaleMultiPolygon(MultiPolygonPunten multiPolygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
             double maxX = multiPolygon.MaximumX;
             double maxY = multiPolygon.MaximumY;
@@ -83,9 +85,11 @@ namespace Logica
                     double x = punt.X - minX;
                     x /= maxX;
                     x *= scaleX;
+                    x += offsetX;
                     double y = punt.Y - minY;
                     y /= maxY;
                     y *= scaleY;
+                    y += offsetY;
                     returnWaarde.Add(new Punt(x, y, punt.Naam));
 
                 }
@@ -95,7 +99,8 @@ namespace Logica
             return new MultiPolygonPunten(pp, multiPolygon.Naam); 
         }
 
-        public List<MultiPolygonPunten> ScaleMultiPolygons(List<MultiPolygonPunten> multiPolygons, double scaleX, double scaleY)
+        //todo (offset var voor center op canvas, vree ambetant)
+        public List<MultiPolygonPunten> ScaleMultiPolygons(List<MultiPolygonPunten> multiPolygons, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
             double maxX = multiPolygons.Max(m => m.MaximumX);
             double maxY = multiPolygons.Max(m => m.MaximumY);
@@ -114,9 +119,11 @@ namespace Logica
                         double x = punt.X - minX;
                         x /= maxX;
                         x *= scaleX;
+                        x += offsetX;
                         double y = punt.Y - minY;
                         y /= maxY;
                         y *= scaleY;
+                        y += offsetY;
                         punten.Add(new Punt(x, y, punt.Naam));
                     }
                     pp.Add(new PolygonPunten(punten, poly.Naam));

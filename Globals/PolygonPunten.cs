@@ -42,6 +42,7 @@ namespace Globals
                     Punten.Add(new Punt(pos.Longitude, pos.Latitude, naam));
                 }
             }
+            Punten.Reverse();
         }
 
         public override string ToString()

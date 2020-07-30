@@ -39,6 +39,7 @@ namespace opdracht2
         List<Polygon> buffer;
         ListBox l;
         CheckBox triangulate;
+        CheckBox scale;
         PolygonManipulatie pm;
         JsonReader j;
         public MainWindow()
@@ -53,7 +54,8 @@ namespace opdracht2
             c = (Canvas)this.FindName("someCanvas");
             CompositionTarget.Rendering += DoUpdates;
             l = (ListBox)this.FindName("lb");
-            triangulate = (CheckBox)this.FindName("triangulate");
+            triangulate = (CheckBox)this.FindName("Triangulate");
+            scale = (CheckBox)this.FindName("Scale");
             Debug.Write("done");
         }
 
@@ -159,7 +161,7 @@ namespace opdracht2
                 List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>();
                 foreach (Object o in lb.SelectedItems)
                 {
-                    if (o.GetType().ToString() == "PolygonPunten") {
+                    if (o.GetType().Name == "PolygonPunten" ) {
                         PolygonPunten p = (PolygonPunten)o;
                         mpps.Add(p.ToMultiPolygonPunten());
                     } else
@@ -168,7 +170,8 @@ namespace opdracht2
                     }
                 }
                 //peuker implementatie moet ook nog gebeuren, code is er al, maar wanneer moet deze aangeroepen worden
-                mpps = pm.ScaleMultiPolygons(mpps, 100, 100);
+                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, c.Width/2, c.Height/2, c.Width/2, c.Height/2);
+                
                 foreach(MultiPolygonPunten mp in mpps)
                 {
                     if (triangulate.IsChecked == true) //kan blkbr ook null zijn, raar
@@ -190,36 +193,56 @@ namespace opdracht2
                     }
                 }
             } 
-            else
+            else if (lb.SelectedItems.Count == 1)
             {
                 switch (lb.SelectedItem.GetType().Name)
                 {
                     case "MultiPolygonPunten":
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear();
-                        MultiPolygonPunten mp = pm.ScaleMultiPolygon((MultiPolygonPunten)lb.SelectedItem, 100, 100);
+                        MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem;
+                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, c.Width / 2, c.Height / 2, c.Width / 2, c.Height / 2);
                         //hier ervoor zorgen dat scaling, triangulation etc gebeurt door gebruik van logica layer functies te callen
                         foreach (PolygonPunten pp in mp.PolygonPunten)
                         {
-                            foreach (PolygonPunten ppd in pm.TriangulatePolygon(pp))
+                            if(triangulate.IsChecked == true)
                             {
-                                c.Children.Add(getPolygon(ppd));
+                                foreach (PolygonPunten ppd in pm.TriangulatePolygon(pp))
+                                {
+                                    c.Children.Add(getPolygon(ppd));
 
+                                }
+                            } else
+                            {
+                                c.Children.Add(getPolygon(pp));
                             }
-                        }
-                        foreach (Polygon po in getPolygon(mp))
-                        {
-                            //c.Children.Add(po);
+                            
                         }
                         break;
                     case "PolygonPunten":
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear();
-                        PolygonPunten p = pm.ScalePolygon((PolygonPunten)lb.SelectedItem, 100, 100);
-                        c.Children.Add(getPolygon(p));
+                        PolygonPunten p = (PolygonPunten)lb.SelectedItem;
+                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, c.Width / 2, c.Height / 2, c.Width / 2, c.Height / 2);
+                        if (triangulate.IsChecked == true)
+                        {
+                            foreach(PolygonPunten pp in pm.TriangulatePolygon(p))
+                            {
+                                c.Children.Add(getPolygon(pp));
+                            }
+
+                        } else
+                        {
+                            c.Children.Add(getPolygon(p));
+
+
+                        }
                         break;
 
                 }
+            } else
+            {
+                c.Children.Clear();
             }
             
 

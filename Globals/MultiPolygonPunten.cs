@@ -27,6 +27,12 @@ namespace Globals
                 PolygonPunten.Add(new PolygonPunten(polygon, naam));
             }
             VindMaximumEnMinimum(PolygonPunten);
+            bool sw = false;
+            foreach (PolygonPunten p in PolygonPunten)
+            {
+                if (sw) p.Punten.Reverse();
+                sw = !sw;
+            }
         }
 
         private void VindMaximumEnMinimum(List<PolygonPunten> polygonPunten)
@@ -35,6 +41,7 @@ namespace Globals
             MaximumY = polygonPunten.Max(p => p.MaximumY);
             MinimumX = polygonPunten.Max(p => p.MinimumX);
             MinimumY = polygonPunten.Max(p => p.MinimumY);
+            
         }
 
 

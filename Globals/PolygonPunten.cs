@@ -49,6 +49,11 @@ namespace Globals
             if (string.Equals(Naam, "", StringComparison.Ordinal)) return "UNKNOWN";
             else return Naam;
         }
+
+        public MultiPolygonPunten ToMultiPolygonPunten()
+        {
+            return new MultiPolygonPunten(new List<PolygonPunten>() { this }, this.Naam);
+        }
     }
 }
 

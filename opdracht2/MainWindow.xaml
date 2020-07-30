@@ -21,6 +21,7 @@
         <Button x:Name="LoadFile" Content="LoadFile" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="27" Width="65" Click="LoadFile_Click"/>
         <Slider HorizontalAlignment="Left" Margin="10,406,0,0" VerticalAlignment="Top" Width="120" Maximum="100" SmallChange="1"/>
         <Label Content="Epsilon (0.001 - 0.1%)" HorizontalAlignment="Left" Margin="8,375,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="Triangulate" Content="Triangulate" HorizontalAlignment="Left" Margin="10,346,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

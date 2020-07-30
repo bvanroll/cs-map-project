@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using Datalaag;
 using Globals;
@@ -94,6 +95,37 @@ namespace Logica
             return new MultiPolygonPunten(pp, multiPolygon.Naam); 
         }
 
+        public List<MultiPolygonPunten> ScaleMultiPolygons(List<MultiPolygonPunten> multiPolygons, double scaleX, double scaleY)
+        {
+            double maxX = multiPolygons.Max(m => m.MaximumX);
+            double maxY = multiPolygons.Max(m => m.MaximumY);
+            double minX = multiPolygons.Min(m => m.MinimumX);
+            double minY = multiPolygons.Min(m => m.MinimumY);
+            List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>();
+            foreach (MultiPolygonPunten mp in multiPolygons)
+            {
+                List<PolygonPunten> pp = new List<PolygonPunten>();
+                foreach (PolygonPunten poly in mp.PolygonPunten)
+                {
+                    List<Punt> punten = new List<Punt>();
+                    foreach (Punt punt in poly.Punten)
+                    {
+
+                        double x = punt.X - minX;
+                        x /= maxX;
+                        x *= scaleX;
+                        double y = punt.Y - minY;
+                        y /= maxY;
+                        y *= scaleY;
+                        punten.Add(new Punt(x, y, punt.Naam));
+                    }
+                    pp.Add(new PolygonPunten(punten, poly.Naam));
+                }
+                mpps.Add(new MultiPolygonPunten(pp, mp.Naam));
+            }
+            return mpps;
+
+        }
         public List<PolygonPunten> GetAllPolygons()
         {
             List<PolygonPunten> lijst = new List<PolygonPunten>();

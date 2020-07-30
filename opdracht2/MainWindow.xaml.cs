@@ -38,7 +38,7 @@ namespace opdracht2
         List<Ellipse> el;
         List<Polygon> buffer;
         ListBox l;
-
+        CheckBox triangulate;
         PolygonManipulatie pm;
         JsonReader j;
         public MainWindow()
@@ -53,7 +53,7 @@ namespace opdracht2
             c = (Canvas)this.FindName("someCanvas");
             CompositionTarget.Rendering += DoUpdates;
             l = (ListBox)this.FindName("lb");
-            
+            triangulate = (CheckBox)this.FindName("triangulate");
             Debug.Write("done");
         }
 
@@ -152,36 +152,76 @@ namespace opdracht2
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //TODO zorg ervoor dat als meerdere items geselecteerd worden, we een scaling methode hebben voor meerdere (wss gebruik van list)
-            //TODO als we zo een methode nodig hebben moeten we ook polygonpunten kunnen omzetten naar multipolygonpunten (met dan maar 1 polygon) 
             //zodat we een 1 lijst kunnen gebruiken voor alle polygons
-            switch (lb.SelectedItem.GetType().Name)
+            if (lb.SelectedItems.Count >1)
             {
-                case "MultiPolygonPunten":
-                    Debug.WriteLine(lb.SelectedItem.GetType().Name);
-                    c.Children.Clear();
-                    MultiPolygonPunten mp = pm.ScaleMultiPolygon((MultiPolygonPunten)lb.SelectedItem, 100, 100);
-                    //hier ervoor zorgen dat scaling, triangulation etc gebeurt door gebruik van logica layer functies te callen
-                    foreach(PolygonPunten pp in mp.PolygonPunten)
+                c.Children.Clear();
+                List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>();
+                foreach (Object o in lb.SelectedItems)
+                {
+                    if (o.GetType().ToString() == "PolygonPunten") {
+                        PolygonPunten p = (PolygonPunten)o;
+                        mpps.Add(p.ToMultiPolygonPunten());
+                    } else
                     {
-                        foreach (PolygonPunten ppd in pm.TriangulatePolygon(pp))
+                        mpps.Add((MultiPolygonPunten)o);
+                    }
+                }
+                //peuker implementatie moet ook nog gebeuren, code is er al, maar wanneer moet deze aangeroepen worden
+                mpps = pm.ScaleMultiPolygons(mpps, 100, 100);
+                foreach(MultiPolygonPunten mp in mpps)
+                {
+                    if (triangulate.IsChecked == true) //kan blkbr ook null zijn, raar
+                    {
+                        foreach(PolygonPunten pp in mp.PolygonPunten)
                         {
-                            c.Children.Add(getPolygon(ppd));
-
+                            foreach(PolygonPunten ppd in pm.TriangulatePolygon(pp))
+                            {
+                                c.Children.Add(getPolygon(ppd));
+                            }
                         }
                     }
-                    foreach(Polygon po in getPolygon(mp))
+                    else
                     {
-                        //c.Children.Add(po);
+                        foreach (Polygon p in getPolygon(mp))
+                        {
+                            c.Children.Add(p);
+                        }
                     }
-                    break;
-                case "PolygonPunten":
-                    Debug.WriteLine(lb.SelectedItem.GetType().Name);
-                    c.Children.Clear();
-                    PolygonPunten p = pm.ScalePolygon((PolygonPunten)lb.SelectedItem, 100, 100);
-                    c.Children.Add(getPolygon(p));
-                    break;
+                }
+            } 
+            else
+            {
+                switch (lb.SelectedItem.GetType().Name)
+                {
+                    case "MultiPolygonPunten":
+                        Debug.WriteLine(lb.SelectedItem.GetType().Name);
+                        c.Children.Clear();
+                        MultiPolygonPunten mp = pm.ScaleMultiPolygon((MultiPolygonPunten)lb.SelectedItem, 100, 100);
+                        //hier ervoor zorgen dat scaling, triangulation etc gebeurt door gebruik van logica layer functies te callen
+                        foreach (PolygonPunten pp in mp.PolygonPunten)
+                        {
+                            foreach (PolygonPunten ppd in pm.TriangulatePolygon(pp))
+                            {
+                                c.Children.Add(getPolygon(ppd));
 
+                            }
+                        }
+                        foreach (Polygon po in getPolygon(mp))
+                        {
+                            //c.Children.Add(po);
+                        }
+                        break;
+                    case "PolygonPunten":
+                        Debug.WriteLine(lb.SelectedItem.GetType().Name);
+                        c.Children.Clear();
+                        PolygonPunten p = pm.ScalePolygon((PolygonPunten)lb.SelectedItem, 100, 100);
+                        c.Children.Add(getPolygon(p));
+                        break;
+
+                }
             }
+            
 
         }
 

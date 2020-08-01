@@ -283,6 +283,29 @@ namespace Logica
             return hoek;
         }
 
+        public PolygonPunten Peuker(PolygonPunten polygon, double epsilon)
+        {
+            double nX = Math.Abs(Math.Abs(polygon.MaximumX) - Math.Abs(polygon.MinimumX));
+            double nY = Math.Abs(Math.Abs(polygon.MaximumY) - Math.Abs(polygon.MinimumY));
+            epsilon = ((nX + nY) / 2) * epsilon;
+            polygon.Punten = Peuker(polygon.Punten, epsilon);
+            return polygon;
+
+        }
+
+        public MultiPolygonPunten Peuker(MultiPolygonPunten polygons, double epsilon)
+        {
+            double nX = Math.Abs(Math.Abs(polygons.MaximumX) - Math.Abs(polygons.MinimumX));
+            double nY = Math.Abs(Math.Abs(polygons.MaximumY) - Math.Abs(polygons.MinimumY));
+            epsilon = ((nX + nY) / 2) * epsilon;
+            foreach (PolygonPunten polygon in polygons.PolygonPunten)
+            {
+
+                polygon.Punten = Peuker(polygon.Punten, epsilon);
+            }
+            return polygons;
+
+        }
         private List<Punt> Peuker(List<Punt> punten, double epsilon)
         {
             double dmax = -1;

@@ -40,6 +40,8 @@ namespace opdracht2
         ListBox l;
         CheckBox triangulate;
         CheckBox scale;
+        CheckBox peuker;
+        Slider peukerPercent;
         PolygonManipulatie pm;
         JsonReader j;
         public MainWindow()
@@ -52,9 +54,11 @@ namespace opdracht2
             buffer = new List<Polygon>();
             InitializeComponent();
             c = (Canvas)this.FindName("someCanvas");
+            peukerPercent = (Slider)this.FindName("PeukerSlider");
             CompositionTarget.Rendering += DoUpdates;
             l = (ListBox)this.FindName("lb");
             triangulate = (CheckBox)this.FindName("Triangulate");
+            peuker = (CheckBox)this.FindName("Peuker");
             scale = (CheckBox)this.FindName("Scale");
             Debug.Write("done");
         }
@@ -174,9 +178,12 @@ namespace opdracht2
                 
                 foreach(MultiPolygonPunten mp in mpps)
                 {
+                    MultiPolygonPunten mps = null;
+                    if (peuker.IsChecked == true) mps = pm.Peuker(mp, peukerPercent.Value / 1000);
+                    else mps = mp;
                     if (triangulate.IsChecked == true) //kan blkbr ook null zijn, raar
                     {
-                        foreach(PolygonPunten pp in mp.PolygonPunten)
+                        foreach(PolygonPunten pp in mps.PolygonPunten)
                         {
                             foreach(PolygonPunten ppd in pm.TriangulatePolygon(pp))
                             {
@@ -202,6 +209,7 @@ namespace opdracht2
                         c.Children.Clear();
                         MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem;
                         if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, 100, 100, 0, 0);
+                        if (peuker.IsChecked == true) mp = pm.Peuker(mp, peukerPercent.Value/1000);
                         //hier ervoor zorgen dat scaling, triangulation etc gebeurt door gebruik van logica layer functies te callen
                         foreach (PolygonPunten pp in mp.PolygonPunten)
                         {
@@ -224,6 +232,7 @@ namespace opdracht2
                         c.Children.Clear();
                         PolygonPunten p = (PolygonPunten)lb.SelectedItem;
                         if (scale.IsChecked == true) p = pm.ScalePolygon(p, 10000, 10000, 0, 0);
+                        if (peuker.IsChecked == true) p = pm.Peuker(p, peukerPercent.Value / 1000);
                         if (triangulate.IsChecked == true)
                         {
                             foreach(PolygonPunten pp in pm.TriangulatePolygon(p))

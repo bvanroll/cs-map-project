@@ -1,23 +1,16 @@
-﻿using GeoJSON.Net.Converters;
-using GeoJSON.Net.Geometry;
+﻿using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Numerics;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.Pkcs;
-using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Point = System.Windows.Point;
-using Polygon = System.Windows.Shapes.Polygon;
 
 namespace opdracht2
 {

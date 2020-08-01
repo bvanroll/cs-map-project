@@ -201,7 +201,7 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear();
                         MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem;
-                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, c.Width / 2, c.Height / 2, c.Width / 2, c.Height / 2);
+                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, 100, 100, 0, 0);
                         //hier ervoor zorgen dat scaling, triangulation etc gebeurt door gebruik van logica layer functies te callen
                         foreach (PolygonPunten pp in mp.PolygonPunten)
                         {
@@ -223,7 +223,7 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear();
                         PolygonPunten p = (PolygonPunten)lb.SelectedItem;
-                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, c.Width / 2, c.Height / 2, c.Width / 2, c.Height / 2);
+                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, 10000, 10000, 0, 0);
                         if (triangulate.IsChecked == true)
                         {
                             foreach(PolygonPunten pp in pm.TriangulatePolygon(p))
@@ -244,7 +244,7 @@ namespace opdracht2
             {
                 c.Children.Clear();
             }
-            
+            Debug.WriteLine("finished");
 
         }
 

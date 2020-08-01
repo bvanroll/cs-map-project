@@ -42,7 +42,7 @@ namespace Globals
             return new Point(X, Y);
         }
 
-        public bool Graden = false;
+        public bool Graden = true;
 
     }
 }

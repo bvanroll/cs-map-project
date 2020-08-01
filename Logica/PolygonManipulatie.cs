@@ -44,16 +44,26 @@ namespace Logica
 
         public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 180, double offsetY = 180)
         {
-            double maxX = polygon.MaximumX;
-            double maxY = polygon.MaximumY;
+            double maxX = polygon.MaximumX - polygon.MinimumX;
+            double maxY = polygon.MaximumY - polygon.MinimumY;
             double minX = polygon.MinimumX;
             double minY = polygon.MinimumY;
             List<Punt> returnWaarde = new List<Punt>();
             foreach (Punt punt in polygon.Punten)
             {
-                Punt x = ScalePoint(scaleX, scaleY,punt, maxX, maxY, offsetX, offsetY);
-                x.Naam = punt.Naam;
-                returnWaarde.Add(x);
+                //Punt x = ScalePoint(scaleX, scaleY, punt, maxX, maxY, offsetX, offsetY);
+
+                double x = punt.X - minX;
+                x /= maxX;
+                x *= scaleX;
+                x += offsetX;
+                double y = punt.Y - minY;
+                y /= maxY;
+                y *= scaleY;
+                y += offsetY;
+                returnWaarde.Add(new Punt(x, y, punt.Naam));
+                //x.Naam = punt.Naam;
+                //returnWaarde.Add(x);
             }
             return new PolygonPunten(returnWaarde, polygon.Naam);
         }

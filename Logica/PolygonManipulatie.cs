@@ -51,19 +51,19 @@ namespace Logica
             List<Punt> returnWaarde = new List<Punt>();
             foreach (Punt punt in polygon.Punten)
             {
-                //Punt x = ScalePoint(scaleX, scaleY, punt, maxX, maxY, offsetX, offsetY);
+                Punt x = ScalePoint(scaleX, scaleY, punt, maxX, maxY, offsetX, offsetY);
 
-                double x = punt.X - minX;
-                x /= maxX;
-                x *= scaleX;
-                x += offsetX;
-                double y = punt.Y - minY;
-                y /= maxY;
-                y *= scaleY;
-                y += offsetY;
-                returnWaarde.Add(new Punt(x, y, punt.Naam));
-                //x.Naam = punt.Naam;
-                //returnWaarde.Add(x);
+                //double x = punt.X - minX;
+                //x /= maxX;
+                //x *= scaleX;
+                //x += offsetX;
+                //double y = punt.Y - minY;
+                //y /= maxY;
+                //y *= scaleY;
+                //y += offsetY;
+                //returnWaarde.Add(new Punt(x, y, punt.Naam));
+                x.Naam = punt.Naam;
+                returnWaarde.Add(x);
             }
             return new PolygonPunten(returnWaarde, polygon.Naam);
         }
@@ -72,14 +72,14 @@ namespace Logica
         private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 360, double maxY = 360, double offsetX = 180, double 
         offsetY = 180)
         {
-            double x = punt.X;
-            x /= maxX;
-            x *= scaleX;
-            x += offsetX;
+            double x = punt.X + 1;
+            //x /= maxX;
+            x *= (scaleX / 2);
+            //x += offsetX;
             double y = punt.Y;
-            y /= maxY;
-            y *= scaleY;
-            y += offsetY;
+            //y /= maxY;
+            y *= (scaleY / 2);
+            //y += offsetY;
             return new Punt(x, y);
         }
 

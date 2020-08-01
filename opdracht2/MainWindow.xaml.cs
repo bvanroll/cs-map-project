@@ -174,7 +174,7 @@ namespace opdracht2
                     }
                 }
                 //peuker implementatie moet ook nog gebeuren, code is er al, maar wanneer moet deze aangeroepen worden
-                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, c.Width/2, c.Height/2, c.Width/2, c.Height/2);
+                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, c.ActualWidth / 2, c.ActualHeight / 2, c.ActualWidth / 2, c.ActualHeight / 2);
                 
                 foreach(MultiPolygonPunten mp in mpps)
                 {
@@ -208,7 +208,7 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear();
                         MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem;
-                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, 100, 100, 0, 0);
+                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, c.ActualWidth / 2, c.ActualHeight / 2, c.ActualWidth / 2, c.Height / 2);
                         if (peuker.IsChecked == true) mp = pm.Peuker(mp, peukerPercent.Value/1000);
                         //hier ervoor zorgen dat scaling, triangulation etc gebeurt door gebruik van logica layer functies te callen
                         foreach (PolygonPunten pp in mp.PolygonPunten)
@@ -231,7 +231,7 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear();
                         PolygonPunten p = (PolygonPunten)lb.SelectedItem;
-                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, 10000, 10000, 0, 0);
+                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, c.ActualWidth / 2 * 100, c.ActualHeight / 2 * 100, c.ActualWidth / 2 * 100, c.ActualHeight / 2 * 100);
                         if (peuker.IsChecked == true) p = pm.Peuker(p, peukerPercent.Value / 1000);
                         if (triangulate.IsChecked == true)
                         {

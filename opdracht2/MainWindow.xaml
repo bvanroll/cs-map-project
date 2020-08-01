@@ -10,7 +10,7 @@
         <Canvas x:Name="someCanvas" RenderTransformOrigin="0.5,0.5" Margin="436,114,128,113">
             <Canvas.RenderTransform>
                 <TransformGroup x:Name="someTransformGroup">
-                    <ScaleTransform ScaleY="-1" ScaleX="-1"/>
+                    <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform/>
                     <TranslateTransform/>

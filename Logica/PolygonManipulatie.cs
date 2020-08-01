@@ -75,8 +75,8 @@ namespace Logica
 
         public MultiPolygonPunten ScaleMultiPolygon(MultiPolygonPunten multiPolygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
-            double maxX = multiPolygon.MaximumX;
-            double maxY = multiPolygon.MaximumY;
+            double maxX = multiPolygon.MaximumX - multiPolygon.MinimumX;
+            double maxY = multiPolygon.MaximumY - multiPolygon.MinimumY;
             double minX = multiPolygon.MinimumX;
             double minY = multiPolygon.MinimumY;
             maxX -= minX;

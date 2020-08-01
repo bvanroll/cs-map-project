@@ -13,7 +13,7 @@ namespace Logica
         public JsonReader JsonReader;
         public PolygonManipulatie(JsonReader jsonReader)
         {
-            JsonReader = jsonReader;
+            JsonReader = jsonReader; //haal datalaag binnen
         }
 
         public List<PolygonPunten> GetPolygons()
@@ -31,17 +31,7 @@ namespace Logica
             return JsonReader._polygons.Find(punten => punten.Naam == naam);
         }
 
-        public List<PolygonPunten> GetTrianglesPolygon(PolygonPunten polygon,  double scaleX
-         = 1, double scaleY = 1, double epsilonPercet = 0)
-        {
-            double grootsteAfstandX = Math.Abs(polygon.MaximumX - polygon.MinimumX);
-            double grootsteAfstandY = Math.Abs(polygon.MaximumY - polygon.MinimumY);
-            double epsilon = ((grootsteAfstandX + grootsteAfstandY) / 2) * epsilonPercet;
-            polygon.Punten = Peuker(polygon.Punten, epsilon);
-            polygon = ScalePolygon(polygon, scaleX, scaleY);
-            return TriangulatePolygon(polygon);
-        }
-
+        //oude schaalmethodes
         public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 180, double offsetY = 180)
         {
             double maxX = polygon.MaximumX - polygon.MinimumX;

@@ -34,9 +34,6 @@ namespace opdracht2
     public partial class MainWindow : Window
     {
         Canvas c;
-        List<Polygon> f;
-        List<Ellipse> el;
-        List<Polygon> buffer;
         ListBox l;
         CheckBox triangulate;
         CheckBox scale;
@@ -46,99 +43,50 @@ namespace opdracht2
         JsonReader j;
         public MainWindow()
         {
-            //todo logica toevoegen als object
-            //todo datalaag toevoegen als object en passen naar logica
-
-            f = new List<Polygon>();
-            el = new List<Ellipse>();
-            buffer = new List<Polygon>();
             InitializeComponent();
-            c = (Canvas)this.FindName("someCanvas");
-            peukerPercent = (Slider)this.FindName("PeukerSlider");
-            CompositionTarget.Rendering += DoUpdates;
-            l = (ListBox)this.FindName("lb");
+            c = (Canvas)this.FindName("someCanvas"); //vind canvas en link het aan object. zo kan later in functies deze aangeroepen worden
+            peukerPercent = (Slider)this.FindName("PeukerSlider"); // vind slider voor peuker percent waarde (wordt later gebruikt in functies)
+            l = (ListBox)this.FindName("lb"); //vind listbox waar landen in gaan komen
+
+            //vind checkboxen die verantwoordelijk zijn voor triangulation, peuker en scaling
             triangulate = (CheckBox)this.FindName("Triangulate");
             peuker = (CheckBox)this.FindName("Peuker");
             scale = (CheckBox)this.FindName("Scale");
+
+
             Debug.Write("done");
         }
 
-        private void DoUpdates(object sender, EventArgs e)
-        {
-            if (f.Count > 0)
-            {
-                Debug.WriteLine("--- ADDING NEW POLYGON FROM LIST (COUNT: " + f.Count + ")");
-                Debug.WriteLine(f[0].ToString());
-                c.Children.Add(f[0]);
-                Debug.WriteLine(("ADDED POLYGON"));
-                f.RemoveAt(0);
-                Debug.WriteLine(("REMOVED POLYGON"));
-                //Thread.Sleep(80);
-            }
-        }
 
-        private Polygon makePolygon(PolygonPunten polygonPunten)
-        {
-            PointCollection punten = new PointCollection();
-            foreach (Punt p in polygonPunten.Punten)
-            {
-                punten.Add(p.ToPoint());
-            }
-            Polygon polygon = new Polygon();
-            polygon.Points = punten;
-            polygon.StrokeThickness = 1;
-
-
-            // deze code zorgt ervoor dat de driehoeken duidelijker zijn op de afbeelding door de kleur willekeurig te selecteren
-            Random random = new Random();
-            Type brushType = typeof(Brushes);
-            PropertyInfo[] properties = brushType.GetProperties();
-            int randomIndex = random.Next(properties.Length);
-            Brush willekeurigeBrush = (Brush) properties[randomIndex].GetValue(null, null);
-            polygon.Fill = willekeurigeBrush;
-            polygon.Stroke = willekeurigeBrush;
-            return polygon;
-        }
-
-        //zoom https://stackoverflow.com/a/44593026
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (f.Count > 0)
-            {
-                buffer.Add(f[0]);
-                f.RemoveAt(0);
-            }
-            
-        }
+        //zoom algoritme da ooit gebruikt geweest is (zit mss niet in deze versie, te lang geleden om te herinneren) https://stackoverflow.com/a/44593026
 
         private void LoadFile_Click(object sender, RoutedEventArgs e)
         {
+            //openfiledialog om json file in te lezen
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                //TODO remove
-                //Tuple<List<Polygon>, List<Ellipse>> t = GeoJsonParser.TriangulateJsonData(File.ReadAllText(openFileDialog.FileName), c.Width, c.Height);
-                //f = GeoJsonParser.TriangulateJsonData(File.ReadAllText(openFileDialog.FileName), 200, 200);
-                j = new JsonReader(openFileDialog.FileName);
-                el = new List<Ellipse>();
-                pm = new PolygonManipulatie(j);
+                j = new JsonReader(openFileDialog.FileName); //dit is een datalaag object dat verantwoordelijk is voor geojson om te zetten naar de zelfgemaakte klassen
+                pm = new PolygonManipulatie(j); //dit is de logica laag instantie
             }
             foreach (object o in pm.GetPolygons())
             {
-                try { l.Items.Add(o); } catch (Exception) { };
+                //voeg alle landen toe aan de list
+                try { l.Items.Add(o); } catch (Exception) { Debug.WriteLine("error adding item"); };
 
             }
             foreach (object o in pm.GetMultiPolygons())
             {
-                try { l.Items.Add(o); } catch (Exception) { };
+                //voeg alle landen toe aan de list deel 2
+                try { l.Items.Add(o); } catch (Exception) { Debug.WriteLine("error adding item"); };
 
             }
+
+
+
+            //voor zoom algo
             var st = new ScaleTransform();
             c.RenderTransform = st;
-            foreach (Ellipse eli in el)
-            {
-                c.Children.Add(eli);
-            }
             c.MouseWheel += (sender, e) =>
             {
                 
@@ -153,45 +101,59 @@ namespace opdracht2
                     st.ScaleY /= 2;
                 }
             };
+
+
+
         }
 
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //TODO zorg ervoor dat als meerdere items geselecteerd worden, we een scaling methode hebben voor meerdere (wss gebruik van list)
             //zodat we een 1 lijst kunnen gebruiken voor alle polygons
+            //
+
+
+
+
+            //als een land geselecteerd wordt in lijst runned deze functie
+
+
+            //is er meer dan 1 land geselecteerd 
             if (lb.SelectedItems.Count >1)
             {
-                c.Children.Clear();
-                List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>();
-                foreach (Object o in lb.SelectedItems)
+                c.Children.Clear(); // haal oude afbeeldingen uit canvas
+                List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>(); //verander polygons in multipolygons met 1 polygon er in (zo kunnen we zelfde bewerking op alle polygons toepassen)
+                foreach (Object o in lb.SelectedItems) //loop doorheen geselecteerde items
                 {
                     if (o.GetType().Name == "PolygonPunten" ) {
-                        PolygonPunten p = (PolygonPunten)o;
+                        PolygonPunten p = (PolygonPunten)o; //als het een polygonpunt object is, zet om naar multipolygon
                         mpps.Add(p.ToMultiPolygonPunten());
                     } else
                     {
-                        mpps.Add((MultiPolygonPunten)o);
+                        mpps.Add((MultiPolygonPunten)o); //multipolygons kunenn gewoon in de lijst toegevoegd worden
                     }
                 }
-                //peuker implementatie moet ook nog gebeuren, code is er al, maar wanneer moet deze aangeroepen worden
-                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, c.Width/2, c.Height/2, c.Width/2, c.Height/2);
+
+                //scale de polygon als de checkbox aan staat
+                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, 10000, 10000, 0, 0);
                 
                 foreach(MultiPolygonPunten mp in mpps)
                 {
                     MultiPolygonPunten mps = null;
+                    //peuker (puntvermindering) wordt hier bekeken en uitgevoerd als nodig. percentage gaat van 0 - 100, maar moet gaan van 0 - .1 daarom /1000;
                     if (peuker.IsChecked == true) mps = pm.Peuker(mp, peukerPercent.Value / 1000);
-                    else mps = mp;
-                    if (triangulate.IsChecked == true) //kan blkbr ook null zijn, raar
+                    else mps = mp; //geen peuker dus gewoon zelfde mp gebruiken (mp = multipolygon)
+                    if (triangulate.IsChecked == true) //check of triangulation nodig is. (kan niet gewoon triangulate.IsChecked want dit geeft ook null soms
                     {
-                        foreach(PolygonPunten pp in mps.PolygonPunten)
+                        foreach(PolygonPunten pp in mps.PolygonPunten) //loop doorheen polygons in multipolygon
                         {
-                            foreach(PolygonPunten ppd in pm.TriangulatePolygon(pp))
+                            foreach(PolygonPunten ppd in pm.TriangulatePolygon(pp)) // loop doorheen driehoeken in polygon
                             {
-                                c.Children.Add(getPolygon(ppd));
+                                c.Children.Add(getPolygon(ppd)); // voeg driehoeken toe aan canvas
                             }
                         }
                     }
-                    else
+                    else //geen triangulation dus voeg gewoon polygons toe aan canvas
                     {
                         foreach (Polygon p in getPolygon(mp))
                         {
@@ -200,49 +162,48 @@ namespace opdracht2
                     }
                 }
             } 
-            else if (lb.SelectedItems.Count == 1)
+            else if (lb.SelectedItems.Count == 1) //als er maar 1 land geselecteerd is
             {
-                switch (lb.SelectedItem.GetType().Name)
+                switch (lb.SelectedItem.GetType().Name) //check of multipolygon of polygon
                 {
-                    case "MultiPolygonPunten":
-                        Debug.WriteLine(lb.SelectedItem.GetType().Name);
-                        c.Children.Clear();
-                        MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem;
-                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, 100, 100, 0, 0);
-                        if (peuker.IsChecked == true) mp = pm.Peuker(mp, peukerPercent.Value/1000);
-                        //hier ervoor zorgen dat scaling, triangulation etc gebeurt door gebruik van logica layer functies te callen
-                        foreach (PolygonPunten pp in mp.PolygonPunten)
+                    case "MultiPolygonPunten": // als multipolygon
+                        Debug.WriteLine(lb.SelectedItem.GetType().Name); // voor debug redenen schrijf naam naar console
+                        c.Children.Clear(); // delete alle vorige afbeeldingen
+                        MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem; //haal multipolygon uit lijst
+                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, 10000, 10000, 0, 0); //schaal multipolygon
+                        if (peuker.IsChecked == true) mp = pm.Peuker(mp, peukerPercent.Value/1000); // als peuker (puntvermindering) moet gebeuren, doe dit hier
+                        foreach (PolygonPunten pp in mp.PolygonPunten) //loop doorheen polygons in multipolygon
                         {
-                            if(triangulate.IsChecked == true)
+                            if(triangulate.IsChecked == true) //als deze getriangulate moeten worden
                             {
-                                foreach (PolygonPunten ppd in pm.TriangulatePolygon(pp))
+                                foreach (PolygonPunten ppd in pm.TriangulatePolygon(pp)) // loop doorheen driehoeken in triangulated polygon
                                 {
-                                    c.Children.Add(getPolygon(ppd));
+                                    c.Children.Add(getPolygon(ppd)); //voeg driehoek toe aan canvas
 
                                 }
-                            } else
+                            } else //niet getriangulate
                             {
-                                c.Children.Add(getPolygon(pp));
+                                c.Children.Add(getPolygon(pp)); // voeg polygon toe aan canvas
                             }
                             
                         }
                         break;
-                    case "PolygonPunten":
+                    case "PolygonPunten": //in geval polygon
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
-                        c.Children.Clear();
-                        PolygonPunten p = (PolygonPunten)lb.SelectedItem;
-                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, 10000, 10000, 0, 0);
-                        if (peuker.IsChecked == true) p = pm.Peuker(p, peukerPercent.Value / 1000);
-                        if (triangulate.IsChecked == true)
+                        c.Children.Clear(); //delete alle vorige afbeeldingen
+                        PolygonPunten p = (PolygonPunten)lb.SelectedItem; // haal land uit lijst
+                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, 10000, 10000, 0, 0); // schaal polygon
+                        if (peuker.IsChecked == true) p = pm.Peuker(p, peukerPercent.Value / 1000); // peuker (puntvermindering)
+                        if (triangulate.IsChecked == true) //triangulation check
                         {
-                            foreach(PolygonPunten pp in pm.TriangulatePolygon(p))
+                            foreach(PolygonPunten pp in pm.TriangulatePolygon(p)) // loop doorheen driehoeken
                             {
-                                c.Children.Add(getPolygon(pp));
+                                c.Children.Add(getPolygon(pp)); //voeg driehoeken toe
                             }
 
                         } else
                         {
-                            c.Children.Add(getPolygon(p));
+                            c.Children.Add(getPolygon(p)); //voeg polygon toe
 
 
                         }
@@ -251,7 +212,7 @@ namespace opdracht2
                 }
             } else
             {
-                c.Children.Clear();
+                c.Children.Clear(); // verwijder alles (als niks geselecteerd is)
             }
             Debug.WriteLine("finished");
 
@@ -259,6 +220,7 @@ namespace opdracht2
 
         private List<Polygon> getPolygon(MultiPolygonPunten mp)
         {
+            //zet multipolygon om naar polygon object (kan deze niet buiten deze klasse gebruiken
             List<Polygon> lijst = new List<Polygon>();
             foreach(PolygonPunten p in mp.PolygonPunten)
             {
@@ -268,6 +230,7 @@ namespace opdracht2
         }
         private Polygon getPolygon(PolygonPunten p)
         {
+            //zet polygon om naar polygon object (kan deze niet buiten deze klasse gebruiken
             Polygon returnWaarde = new Polygon();
             PointCollection puntCollectie = new PointCollection();
             foreach(Punt punt in p.Punten)
@@ -278,7 +241,7 @@ namespace opdracht2
             returnWaarde.StrokeThickness = 1;
 
 
-            // deze code zorgt ervoor dat de driehoeken duidelijker zijn op de afbeelding door de kleur willekeurig te selecteren
+            // deze code bepaald kleur van de polygon
             Random random = new Random();
             Type brushType = typeof(Brushes);
             PropertyInfo[] properties = brushType.GetProperties();

@@ -14,8 +14,16 @@ namespace Globals
         public Punt(double x, double y, string naam = "")
         {
             Naam = naam;
-            X = ConvertToRadians(x);
-            Y = ConvertToRadians(y);
+            if (Graden)
+            {
+                X = ConvertToRadians(x);
+                Y = ConvertToRadians(y);
+            }
+            else
+            {
+                X = x;
+                Y = y;
+            }
         }
 
         public override string ToString()
@@ -33,6 +41,8 @@ namespace Globals
         {
             return new Point(X, Y);
         }
+
+        public bool Graden = false;
 
     }
 }

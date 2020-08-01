@@ -5399,19 +5399,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Beppe\\.nuget\\packages\\": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\opdracht2\\opdracht2.csproj",
+      "projectUniqueName": "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\opdracht2\\opdracht2.csproj",
       "projectName": "opdracht2",
-      "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\opdracht2\\opdracht2.csproj",
-      "packagesPath": "C:\\Users\\Beppe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\opdracht2\\obj\\",
+      "projectPath": "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\opdracht2\\opdracht2.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\opdracht2\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Beppe\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5424,14 +5428,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj": {
-              "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Datalaag\\Datalaag.csproj"
+            "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\Datalaag\\Datalaag.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\Datalaag\\Datalaag.csproj"
             },
-            "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj": {
-              "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Globals\\Globals.csproj"
+            "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\Globals\\Globals.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\Globals\\Globals.csproj"
             },
-            "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj": {
-              "projectPath": "C:\\Users\\Beppe\\source\\repos\\opdracht2\\Logica\\Logica.csproj"
+            "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\Logica\\Logica.csproj": {
+              "projectPath": "C:\\Users\\Admin\\Source\\Repos\\project-opdracht2\\Logica\\Logica.csproj"
             }
           }
         }

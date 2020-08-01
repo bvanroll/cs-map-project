@@ -12,3 +12,17 @@ C:\Users\Beppe\source\repos\opdracht2\Logica\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Beppe\source\repos\opdracht2\Logica\obj\Debug\Logica.csproj.CopyComplete
 C:\Users\Beppe\source\repos\opdracht2\Logica\obj\Debug\Logica.dll
 C:\Users\Beppe\source\repos\opdracht2\Logica\obj\Debug\Logica.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Logica.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Logica.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Datalaag.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\GeoJSON.Net.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Globals.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Datalaag.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Globals.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\obj\Debug\Logica.csprojAssemblyReference.cache
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\obj\Debug\Logica.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\obj\Debug\Logica.csproj.CopyComplete
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\obj\Debug\Logica.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Logica\obj\Debug\Logica.pdb

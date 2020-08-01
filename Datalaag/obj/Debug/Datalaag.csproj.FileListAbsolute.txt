@@ -10,3 +10,15 @@ C:\Users\Beppe\source\repos\opdracht2\Datalaag\obj\Debug\Datalaag.csproj.CoreCom
 C:\Users\Beppe\source\repos\opdracht2\Datalaag\obj\Debug\Datalaag.csproj.CopyComplete
 C:\Users\Beppe\source\repos\opdracht2\Datalaag\obj\Debug\Datalaag.dll
 C:\Users\Beppe\source\repos\opdracht2\Datalaag\obj\Debug\Datalaag.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\bin\Debug\Datalaag.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\bin\Debug\Datalaag.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\bin\Debug\GeoJSON.Net.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\bin\Debug\Globals.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\bin\Debug\Globals.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\obj\Debug\Datalaag.csprojAssemblyReference.cache
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\obj\Debug\Datalaag.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\obj\Debug\Datalaag.csproj.CopyComplete
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\obj\Debug\Datalaag.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Datalaag\obj\Debug\Datalaag.pdb

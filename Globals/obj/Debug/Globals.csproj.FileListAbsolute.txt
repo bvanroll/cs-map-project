@@ -8,3 +8,13 @@ C:\Users\Beppe\source\repos\opdracht2\Globals\obj\Debug\Globals.csproj.CoreCompi
 C:\Users\Beppe\source\repos\opdracht2\Globals\obj\Debug\Globals.csproj.CopyComplete
 C:\Users\Beppe\source\repos\opdracht2\Globals\obj\Debug\Globals.dll
 C:\Users\Beppe\source\repos\opdracht2\Globals\obj\Debug\Globals.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\bin\Debug\Globals.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\bin\Debug\Globals.pdb
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\bin\Debug\GeoJSON.Net.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\obj\Debug\Globals.csprojAssemblyReference.cache
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\obj\Debug\Globals.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\obj\Debug\Globals.csproj.CopyComplete
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\obj\Debug\Globals.dll
+C:\Users\Admin\Source\Repos\project-opdracht2\Globals\obj\Debug\Globals.pdb

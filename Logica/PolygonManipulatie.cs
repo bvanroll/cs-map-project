@@ -41,36 +41,36 @@ namespace Logica
             List<Punt> returnWaarde = new List<Punt>();
             foreach (Punt punt in polygon.Punten)
             {
-                //Punt x = ScalePoint(scaleX, scaleY, punt, maxX, maxY, offsetX, offsetY);
+                Punt x = ScalePoint(scaleX, scaleY, punt, maxX, maxY, offsetX, offsetY, minX, minY);
 
-                double x = punt.X - minX;
-                x /= maxX;
-                x *= scaleX;
-                x += offsetX;
-                double y = punt.Y - minY;
-                y /= maxY;
-                y *= scaleY;
-                y += offsetY;
-                returnWaarde.Add(new Punt(x, y, punt.Naam));
+                //double x = punt.X - minX;
+                //x /= maxX;
+                //x *= scaleX;
+                //x += offsetX;
+                //double y = punt.Y - minY;
+                //y /= maxY;
+                //y *= scaleY;
+                //y += offsetY;
+                //returnWaarde.Add(new Punt(x, y, punt.Naam));
                 //x.Naam = punt.Naam;
-                //returnWaarde.Add(x);
+                returnWaarde.Add(x);
             }
             return new PolygonPunten(returnWaarde, polygon.Naam);
         }
 
         //lat en long = graden, graden => coords (/360 * scale?
-        private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 360, double maxY = 360, double offsetX = 180, double 
-        offsetY = 180)
+        private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 360, double maxY = 360, double offsetX = 180, double
+        offsetY = 180, double minX = 0, double minY = 0)
         {
-            double x = punt.X;
+            double x = punt.X - minX;
             x /= maxX;
             x *= scaleX;
             x += offsetX;
-            double y = punt.Y;
+            double y = punt.Y - minY;
             y /= maxY;
             y *= scaleY;
             y += offsetY;
-            return new Punt(x, y);
+            return new Punt(x, y, punt.Naam);
         }
 
         public MultiPolygonPunten ScaleMultiPolygon(MultiPolygonPunten multiPolygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
@@ -98,8 +98,7 @@ namespace Logica
                     y += offsetY;
                     returnWaarde.Add(new Punt(x, y, punt.Naam));*/
                     
-                    Punt x = ScalePoint(scaleX, scaleY,punt, maxX, maxY, offsetX, offsetY);
-                    x.Naam = punt.Naam;
+                    Punt x = ScalePoint(scaleX, scaleY, punt, maxX, maxY, offsetX, offsetY, minX, minY);
                     returnWaarde.Add(x);
 
                 }
@@ -126,7 +125,7 @@ namespace Logica
                     foreach (Punt punt in poly.Punten)
                     {
                         
-                        Punt x = ScalePoint(scaleX, scaleY,punt, maxX, maxY, offsetX, offsetY);
+                        Punt x = ScalePoint(scaleX, scaleY,punt, maxX, maxY, offsetX, offsetY, minX, minY);
                         x.Naam = punt.Naam;
                         punten.Add(x);
                         /*double x = punt.X - minX;
@@ -285,17 +284,34 @@ namespace Logica
 
         public MultiPolygonPunten Peuker(MultiPolygonPunten polygons, double epsilon)
         {
-            double nX = Math.Abs(Math.Abs(polygons.MaximumX) - Math.Abs(polygons.MinimumX));
-            double nY = Math.Abs(Math.Abs(polygons.MaximumY) - Math.Abs(polygons.MinimumY));
-            epsilon = ((nX + nY) / 2) * epsilon;
             foreach (PolygonPunten polygon in polygons.PolygonPunten)
             {
+                double nX = Math.Abs(Math.Abs(polygon.MaximumX) - Math.Abs(polygon.MinimumX));
+                double nY = Math.Abs(Math.Abs(polygon.MaximumY) - Math.Abs(polygon.MinimumY));
+                epsilon = ((nX + nY) / 2) * epsilon;
 
                 polygon.Punten = Peuker(polygon.Punten, epsilon);
             }
             return polygons;
 
         }
+
+
+        //
+        /*
+         * De reden dat peuker enkel werkte op bepaalde landen was wegens de grote van deze landen/ polygons in deze landen. 
+         * Sommige landen waren zo klein dat het double datatype een limiet bereikt had van precisie (bv 0.00000000005 0.00000000007 zouden worden herleid naar 0.0000000001)
+         * De afstands methode die een afstand probeert te berekenen tussen 2 punten doet op een bepaald moment een aftrekking en als de punten gelijk waren komt in die var een 0
+         * daarna wordt deze var gebruikt voor een deling, en een deling door 0 geeft geen error, maar een NaN type in het double datatype
+         * Daardoor ging peuker niet op kleinere landen zoals lichtenstein
+         * D
+         *
+         *De oplossing voor dit probleem was door het gebruik van de contains methode in de polygonpunten klasse
+         * elk punt dat toegevoegd wordt wordt gechecked of het al in de lijst zit. Dit vertraagd het inladen van de data enorm, maar zorgt ervoor dat alle landen puntvermindering kunnen krijgen
+         * 
+         * 
+         * 
+         */
         private List<Punt> Peuker(List<Punt> punten, double epsilon)
         {
             double dmax = -1;
@@ -309,6 +325,10 @@ namespace Logica
                 {
                     index = i;
                     dmax = distance;
+                } 
+                else
+                {
+                    Debug.WriteLine("hmm");
                 }
             }
 
@@ -334,8 +354,14 @@ namespace Logica
 
         private double PerpendicularDistance2(Punt point, Punt l1, Punt l2)
         {
-            return Math.Abs((l2.X - l1.X) * (l1.Y - point.Y) - (l1.X - point.X) * (l2.Y - l1.Y)) /
+            double temp = Math.Abs((l2.X - l1.X) * (l1.Y - point.Y) - (l1.X - point.X) * (l2.Y - l1.Y)) /
                    Math.Sqrt(Math.Pow(l2.X - l1.X, 2) + Math.Pow(l2.Y - l1.Y, 2));
+            if (double.IsNaN(temp))
+            {
+                Debug.WriteLine("wtf fam");
+                return 0;
+            }
+            return temp;
         }
     }
 }

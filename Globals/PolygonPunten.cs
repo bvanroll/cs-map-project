@@ -31,7 +31,9 @@ namespace Globals
             {
                 foreach (Position pos in l.Coordinates)
                 {
-                    Punten.Add(new Punt(pos.Longitude, pos.Latitude, naam));
+                    Punt pu = new Punt(pos.Longitude, pos.Latitude, naam);
+                    if (!Punten.Contains(pu)) Punten.Add(pu); //dit vertraagd programma enorm, maar zorgt ervoor dat peuker beter werkt denk ik
+                    //de vertraging komt vooral door de .Contains methode, deze mag weggelaten worden voor snelheid maar peuker zal niet meer zo goed werken 
                 }
             }
             Punten.Reverse();

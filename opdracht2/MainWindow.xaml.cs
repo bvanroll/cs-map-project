@@ -135,7 +135,7 @@ namespace opdracht2
                 }
 
                 //scale de polygon als de checkbox aan staat
-                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, 10000, 10000, 0, 0);
+                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, c.ActualWidth/2, c.ActualHeight/2, 0, 0);
                 
                 foreach(MultiPolygonPunten mp in mpps)
                 {
@@ -170,7 +170,7 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name); // voor debug redenen schrijf naam naar console
                         c.Children.Clear(); // delete alle vorige afbeeldingen
                         MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem; //haal multipolygon uit lijst
-                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, 10000, 10000, 0, 0); //schaal multipolygon
+                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, c.ActualWidth / 2, c.ActualHeight / 2, 0, 0); //schaal multipolygon
                         if (peuker.IsChecked == true) mp = pm.Peuker(mp, peukerPercent.Value/1000); // als peuker (puntvermindering) moet gebeuren, doe dit hier
                         foreach (PolygonPunten pp in mp.PolygonPunten) //loop doorheen polygons in multipolygon
                         {
@@ -192,7 +192,7 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear(); //delete alle vorige afbeeldingen
                         PolygonPunten p = (PolygonPunten)lb.SelectedItem; // haal land uit lijst
-                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, 10000, 10000, 0, 0); // schaal polygon
+                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, c.ActualWidth/2, c.ActualHeight/2, 0, 0); // schaal polygon
                         if (peuker.IsChecked == true) p = pm.Peuker(p, peukerPercent.Value / 1000); // peuker (puntvermindering)
                         if (triangulate.IsChecked == true) //triangulation check
                         {

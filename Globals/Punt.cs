@@ -16,8 +16,8 @@ namespace Globals
             Naam = naam;
             if (Graden)
             {
-                X = ConvertToRadians(x);
-                Y = ConvertToRadians(y);
+                X = ConvertToRadians(x) * 100;
+                Y = ConvertToRadians(y) * 100;
             }
             else
             {
@@ -44,5 +44,17 @@ namespace Globals
 
         public bool Graden = true;
 
+        public override bool Equals(object obj)
+        {
+            try
+            {
+                Punt p = (Punt)obj;
+                return (p.X == this.X && p.Y == this.Y); // && this.Name = p.Name
+                
+            } catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

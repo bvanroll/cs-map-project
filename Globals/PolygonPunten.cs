@@ -14,13 +14,22 @@ namespace Globals
         {
             Punten = punten;
             Naam = naam;
+            MaximumX = Double.MinValue;
+            MaximumY = Double.MinValue;
+            MinimumX = Double.MaxValue;
+            MinimumY = Double.MaxValue;
+
             UpdateMaxEnMinPunt();
         }
 
-        public PolygonPunten(GeoJSON.Net.Geometry.Polygon polygon, string naam = "", bool reverse = true)
+        public PolygonPunten(Polygon polygon, string naam = "", bool reverse = true)
         {
             Naam = naam;
             Punten = new List<Punt>();
+            MaximumX = Double.MinValue;
+            MaximumY = Double.MinValue;
+            MinimumX = Double.MaxValue;
+            MinimumY = Double.MaxValue;
             
             foreach (LineString linestring in polygon.Coordinates)
             {

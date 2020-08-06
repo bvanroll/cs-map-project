@@ -12,8 +12,8 @@ namespace Globals
             Naam = naam;
             if (Graden)
             {
-                X = ConvertToPercentage(x) * 100;
-                Y = ConvertToPercentage(y) * 100;
+                X = ConvertToPercentage(x) * 50 + 50;
+                Y = ConvertToPercentage(y) * 50 + 50;
             }
             else
             {
@@ -30,7 +30,7 @@ namespace Globals
         
         public double ConvertToPercentage(double angle)
         {
-            if (angle < 0) angle += 360;
+            
             return angle / 360;
         }
         

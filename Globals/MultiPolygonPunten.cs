@@ -34,9 +34,9 @@ namespace Globals
         private void UpdateMaximumEnMinimum(PolygonPunten polygon)
         {
             if (polygon.MaximumX > MaximumX) MaximumX = polygon.MaximumX;
-            else if (polygon.MinimumX < MinimumX) MinimumX = polygon.MinimumX;
+            if (polygon.MinimumX < MinimumX) MinimumX = polygon.MinimumX;
             if (polygon.MaximumY > MaximumY) MaximumY = polygon.MaximumY;
-            else if (polygon.MinimumY < MinimumY) MinimumY = polygon.MinimumY;
+            if (polygon.MinimumY < MinimumY) MinimumY = polygon.MinimumY;
         }
 
         public void UpdateMaximumEnMinimum()

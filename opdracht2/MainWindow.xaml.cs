@@ -108,13 +108,11 @@ namespace opdracht2
 
 
             //voorbereiding van scale waarden.
-
+            
             double scaleX = (c.ActualHeight > c.ActualWidth) ? c.ActualWidth : c.ActualHeight;
             double scaleY = (c.ActualHeight > c.ActualWidth) ? c.ActualWidth : c.ActualHeight;
-            scaleX /= 2;
-            scaleY /= 2;
-            double offsetX = scaleX; //vroeger c.ActualWidth/2
-            double offsetY = scaleY;
+            double offsetX = 0; //vroeger c.ActualWidth/2
+            double offsetY = 0;
             //dit zorgt voor evenredige scaling zonder stretching. als men wel stretching wilt gebruiken:
             // scaleX = c.ActualWidth;
             // scaleY = c.ActualHeight;

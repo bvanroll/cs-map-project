@@ -58,16 +58,16 @@ namespace Logica
             return new PolygonPunten(returnWaarde, polygon.Naam);
         }
 
-        //lat en long = graden, graden => coords (/360 * scale?
+        //scaling maakt nu gebruik van max en min waarden, dus als iets een punt was op 360 graden wordt het nu gezoomed
         private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 1, double maxY = 1, double offsetX = 0, double
         offsetY = 0, double minX = 0, double minY = 0)
         {
-            double x = punt.X;
-            x /= maxX;
+            double x = punt.X - minX;
+            x /= (maxX - minX);
             x *= scaleX;
             x += offsetX;
-            double y = punt.Y;
-            y /= maxY;
+            double y = punt.Y - minY;
+            y /= (maxY - minY);
             y *= scaleY;
             y += offsetY;
             return new Punt(x, y, punt.Naam);
@@ -106,14 +106,19 @@ namespace Logica
             return new MultiPolygonPunten(pp, multiPolygon.Naam); 
         }
 
-        //todo (offset var voor center op canvas, vree ambetant)
         public List<MultiPolygonPunten> ScaleMultiPolygons(List<MultiPolygonPunten> multiPolygons, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
-            //TODO onderdeel versnelen door manuele for each loop
-            double maxX = multiPolygons.Max(m => m.MaximumX);
-            double maxY = multiPolygons.Max(m => m.MaximumY);
-            double minX = multiPolygons.Min(m => m.MinimumX);
-            double minY = multiPolygons.Min(m => m.MinimumY);
+            double maxX = Double.MinValue;
+            double maxY = Double.MinValue;
+            double minX = Double.MaxValue;
+            double minY = Double.MaxValue;
+            foreach (MultiPolygonPunten mp in multiPolygons)
+            {
+                if (mp.MaximumX > maxX) maxX = mp.MaximumX;
+                if (mp.MinimumX < minX) minX = mp.MinimumX;
+                if (mp.MaximumY > maxY) maxY = mp.MaximumY;
+                if (mp.MinimumY < minY) minY = mp.MinimumY;
+            }
             
             List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>();
             foreach (MultiPolygonPunten mp in multiPolygons)

@@ -34,8 +34,8 @@ namespace Logica
         //oude schaalmethodes
         public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
-            double maxX = polygon.MaximumX - polygon.MinimumX;
-            double maxY = polygon.MaximumY - polygon.MinimumY;
+            double maxX = polygon.MaximumX;
+            double maxY = polygon.MaximumY;
             double minX = polygon.MinimumX;
             double minY = polygon.MinimumY;
             List<Punt> returnWaarde = new List<Punt>();
@@ -62,11 +62,11 @@ namespace Logica
         private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 1, double maxY = 1, double offsetX = 0, double
         offsetY = 0, double minX = 0, double minY = 0)
         {
-            double x = punt.X - minX;
+            double x = punt.X;
             x /= maxX;
             x *= scaleX;
             x += offsetX;
-            double y = punt.Y - minY;
+            double y = punt.Y;
             y /= maxY;
             y *= scaleY;
             y += offsetY;
@@ -75,12 +75,10 @@ namespace Logica
 
         public MultiPolygonPunten ScaleMultiPolygon(MultiPolygonPunten multiPolygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
-            double maxX = multiPolygon.MaximumX - multiPolygon.MinimumX;
-            double maxY = multiPolygon.MaximumY - multiPolygon.MinimumY;
+            double maxX = multiPolygon.MaximumX;
+            double maxY = multiPolygon.MaximumY;
             double minX = multiPolygon.MinimumX;
             double minY = multiPolygon.MinimumY;
-            maxX -= minX;
-            maxY -= minY;
             List<PolygonPunten> pp = new List<PolygonPunten>();
             foreach (PolygonPunten polygon in multiPolygon.PolygonPunten)
             {
@@ -111,12 +109,12 @@ namespace Logica
         //todo (offset var voor center op canvas, vree ambetant)
         public List<MultiPolygonPunten> ScaleMultiPolygons(List<MultiPolygonPunten> multiPolygons, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
+            //TODO onderdeel versnelen door manuele for each loop
             double maxX = multiPolygons.Max(m => m.MaximumX);
             double maxY = multiPolygons.Max(m => m.MaximumY);
             double minX = multiPolygons.Min(m => m.MinimumX);
             double minY = multiPolygons.Min(m => m.MinimumY);
-            maxX -= minX;
-            maxY -= minY;
+            
             List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>();
             foreach (MultiPolygonPunten mp in multiPolygons)
             {

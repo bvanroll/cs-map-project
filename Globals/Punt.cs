@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Globals
@@ -16,8 +12,8 @@ namespace Globals
             Naam = naam;
             if (Graden)
             {
-                X = ConvertToRadians(x) * 100;
-                Y = ConvertToRadians(y) * 100;
+                X = ConvertToPercentage(x) * 100;
+                Y = ConvertToPercentage(y) * 100;
             }
             else
             {
@@ -32,9 +28,10 @@ namespace Globals
             else return Naam;
         }
         
-        public double ConvertToRadians(double angle)
+        public double ConvertToPercentage(double angle)
         {
-            return (Math.PI / 180) * angle;
+            if (angle < 0) angle += 360;
+            return angle / 360;
         }
         
         public Point ToPoint()

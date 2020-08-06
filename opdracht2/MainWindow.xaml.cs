@@ -2,22 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Globals;
 using Brush = System.Windows.Media.Brush;
@@ -118,6 +106,19 @@ namespace opdracht2
             //als een land geselecteerd wordt in lijst runned deze functie
 
 
+
+            //voorbereiding van scale waarden.
+
+            double scaleX = (c.ActualHeight > c.ActualWidth) ? c.ActualWidth : c.ActualHeight;
+            double scaleY = (c.ActualHeight > c.ActualWidth) ? c.ActualWidth : c.ActualHeight;
+            scaleX /= 2;
+            scaleY /= 2;
+            double offsetX = scaleX; //vroeger c.ActualWidth/2
+            double offsetY = scaleY;
+            //dit zorgt voor evenredige scaling zonder stretching. als men wel stretching wilt gebruiken:
+            // scaleX = c.ActualWidth;
+            // scaleY = c.ActualHeight;
+
             //is er meer dan 1 land geselecteerd 
             if (lb.SelectedItems.Count >1)
             {
@@ -135,7 +136,7 @@ namespace opdracht2
                 }
 
                 //scale de polygon als de checkbox aan staat
-                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, c.ActualWidth/2, c.ActualHeight/2, 0, 0);
+                if (scale.IsChecked == true) mpps = pm.ScaleMultiPolygons(mpps, scaleX, scaleY, offsetX, offsetY);
                 
                 foreach(MultiPolygonPunten mp in mpps)
                 {
@@ -170,7 +171,7 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name); // voor debug redenen schrijf naam naar console
                         c.Children.Clear(); // delete alle vorige afbeeldingen
                         MultiPolygonPunten mp = (MultiPolygonPunten)lb.SelectedItem; //haal multipolygon uit lijst
-                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, c.ActualWidth / 2, c.ActualHeight / 2, 0, 0); //schaal multipolygon
+                        if (scale.IsChecked == true) mp = pm.ScaleMultiPolygon(mp, scaleX, scaleY, offsetX, offsetY); //schaal multipolygon
                         if (peuker.IsChecked == true) mp = pm.Peuker(mp, peukerPercent.Value/1000); // als peuker (puntvermindering) moet gebeuren, doe dit hier
                         foreach (PolygonPunten pp in mp.PolygonPunten) //loop doorheen polygons in multipolygon
                         {
@@ -192,7 +193,8 @@ namespace opdracht2
                         Debug.WriteLine(lb.SelectedItem.GetType().Name);
                         c.Children.Clear(); //delete alle vorige afbeeldingen
                         PolygonPunten p = (PolygonPunten)lb.SelectedItem; // haal land uit lijst
-                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, c.ActualWidth/2, c.ActualHeight/2, 0, 0); // schaal polygon
+                       
+                        if (scale.IsChecked == true) p = pm.ScalePolygon(p, scaleX, scaleY, offsetX, offsetY); // schaal polygon
                         if (peuker.IsChecked == true) p = pm.Peuker(p, peukerPercent.Value / 1000); // peuker (puntvermindering)
                         if (triangulate.IsChecked == true) //triangulation check
                         {

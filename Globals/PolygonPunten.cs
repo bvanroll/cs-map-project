@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
 using GeoJSON.Net.Geometry;
 namespace Globals
 {
@@ -17,36 +14,67 @@ namespace Globals
         {
             Punten = punten;
             Naam = naam;
-            MaximumX = punten.Max(punt => punt.X);
-            MaximumY = punten.Max(punt => punt.Y);
-            MinimumX = punten.Min(punt => punt.X);
-            MinimumY = punten.Min(punt => punt.Y);
+            UpdateMaxEnMinPunt();
         }
 
-        public PolygonPunten(GeoJSON.Net.Geometry.Polygon p, string naam = "")
+        public PolygonPunten(GeoJSON.Net.Geometry.Polygon polygon, string naam = "", bool reverse = true)
         {
             Naam = naam;
             Punten = new List<Punt>();
-            foreach (LineString l in p.Coordinates)
+            
+            foreach (LineString linestring in polygon.Coordinates)
             {
-                foreach (Position pos in l.Coordinates)
+                if (reverse)
                 {
-                    Punt pu = new Punt(pos.Longitude, pos.Latitude, naam);
-                    if (!Punten.Contains(pu)) Punten.Add(pu); //dit vertraagd programma enorm, maar zorgt ervoor dat peuker beter werkt denk ik
-                    //de vertraging komt vooral door de .Contains methode, deze mag weggelaten worden voor snelheid maar peuker zal niet meer zo goed werken 
+                    foreach (Position positie in linestring.Coordinates.Reverse()) //sneller om eerst te reversen dan tegen einde deze bewerking te doen
+                    {
+                        Punt punt = new Punt(positie.Longitude, positie.Latitude, naam);
+                    
+                        if (!Punten.Contains(punt)) {
+                            Punten.Add(punt); //dit vertraagd programma enorm, maar zorgt ervoor dat peuker beter werkt denk ik
+                            UpdateMaxEnMinPunt(punt); //sneller dan eindigen met punten.max en punten.min
+                        }
+                        //de vertraging komt vooral door de .Contains methode, deze mag weggelaten worden voor snelheid maar peuker zal niet meer zo goed werken 
+                    }
                 }
+                else
+                {
+                    foreach (Position positie in linestring.Coordinates) 
+                    {
+                        Punt punt = new Punt(positie.Longitude, positie.Latitude, naam);
+                    
+                        if (!Punten.Contains(punt)) {
+                            Punten.Add(punt); //dit vertraagd programma enorm, maar zorgt ervoor dat peuker beter werkt denk ik
+                            UpdateMaxEnMinPunt(punt); //sneller dan eindigen met punten.max en punten.min
+                        }
+                        //de vertraging komt vooral door de .Contains methode, deze mag weggelaten worden voor snelheid maar peuker zal niet meer zo goed werken 
+                    }
+                }
+                
             }
-            Punten.Reverse();
-            MaximumX = Punten.Max(punt => punt.X);
-            MaximumY = Punten.Max(punt => punt.Y);
-            MinimumX = Punten.Min(punt => punt.X);
-            MinimumY = Punten.Min(punt => punt.Y);
         }
+
+        private void UpdateMaxEnMinPunt(Punt punt)
+        {
+            if (punt.X > MaximumX) MaximumX = punt.X;
+            else if (punt.X < MinimumX) MinimumX = punt.X;
+            if (punt.Y > MaximumY) MaximumY = punt.Y;
+            else if (punt.Y < MinimumY) MinimumY = punt.Y;
+        }
+
+        public void UpdateMaxEnMinPunt()
+        {
+            foreach (Punt punt in Punten)
+            {
+                UpdateMaxEnMinPunt(punt);
+            }
+        }
+
 
         public override string ToString()
         {
             if (string.Equals(Naam, "", StringComparison.Ordinal)) return "UNKNOWN";
-            else return Naam;
+            return Naam;
         }
 
         public MultiPolygonPunten ToMultiPolygonPunten()

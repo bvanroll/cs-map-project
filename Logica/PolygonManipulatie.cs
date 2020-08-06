@@ -32,7 +32,7 @@ namespace Logica
         }
 
         //oude schaalmethodes
-        public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 180, double offsetY = 180)
+        public PolygonPunten ScalePolygon(PolygonPunten polygon, double scaleX, double scaleY, double offsetX = 0, double offsetY = 0)
         {
             double maxX = polygon.MaximumX - polygon.MinimumX;
             double maxY = polygon.MaximumY - polygon.MinimumY;
@@ -59,8 +59,8 @@ namespace Logica
         }
 
         //lat en long = graden, graden => coords (/360 * scale?
-        private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 360, double maxY = 360, double offsetX = 180, double
-        offsetY = 180, double minX = 0, double minY = 0)
+        private static Punt ScalePoint(double scaleX, double scaleY, Punt punt, double maxX = 1, double maxY = 1, double offsetX = 0, double
+        offsetY = 0, double minX = 0, double minY = 0)
         {
             double x = punt.X - minX;
             x /= maxX;
@@ -115,6 +115,8 @@ namespace Logica
             double maxY = multiPolygons.Max(m => m.MaximumY);
             double minX = multiPolygons.Min(m => m.MinimumX);
             double minY = multiPolygons.Min(m => m.MinimumY);
+            maxX -= minX;
+            maxY -= minY;
             List<MultiPolygonPunten> mpps = new List<MultiPolygonPunten>();
             foreach (MultiPolygonPunten mp in multiPolygons)
             {

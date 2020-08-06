@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GeoJSON.Net.Geometry;
 
 namespace Globals
@@ -15,35 +14,38 @@ namespace Globals
         {
             PolygonPunten = polygonPunten;
             Naam = naam;
-            VindMaximumEnMinimum(polygonPunten);
+            UpdateMaximumEnMinimum();
         }
 
         public MultiPolygonPunten(MultiPolygon multiPolygon, string naam = "")
         {
             Naam = naam;
             PolygonPunten = new List<PolygonPunten>();
+            bool reverse = true;
             foreach (Polygon polygon in multiPolygon.Coordinates)
             {
-                PolygonPunten.Add(new PolygonPunten(polygon, naam));
-            }
-            VindMaximumEnMinimum(PolygonPunten);
-            bool sw = false;
-            foreach (PolygonPunten p in PolygonPunten)
-            {
-                if (sw) p.Punten.Reverse();
-                sw = !sw;
+                PolygonPunten p = new PolygonPunten(polygon, naam, reverse);
+                PolygonPunten.Add(p);
+                reverse = !reverse; //reverse parameter voor polygonpunten is sneler dan 
+                UpdateMaximumEnMinimum(p);
             }
         }
 
-        private void VindMaximumEnMinimum(List<PolygonPunten> polygonPunten)
+        private void UpdateMaximumEnMinimum(PolygonPunten polygon)
         {
-            MaximumX = polygonPunten.Max(p => p.MaximumX);
-            MaximumY = polygonPunten.Max(p => p.MaximumY);
-            MinimumX = polygonPunten.Max(p => p.MinimumX);
-            MinimumY = polygonPunten.Max(p => p.MinimumY);
-            
+            if (polygon.MaximumX > MaximumX) MaximumX = polygon.MaximumX;
+            else if (polygon.MinimumX < MinimumX) MinimumX = polygon.MinimumX;
+            if (polygon.MaximumY > MaximumY) MaximumY = polygon.MaximumY;
+            else if (polygon.MinimumY < MinimumY) MinimumY = polygon.MinimumY;
         }
 
+        public void UpdateMaximumEnMinimum()
+        {
+            foreach (PolygonPunten polygon in PolygonPunten)
+            {
+                UpdateMaximumEnMinimum(polygon);
+            }
+        }
 
         public override string ToString()
         {
